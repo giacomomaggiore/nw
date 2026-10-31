@@ -1,1441 +1,1476 @@
 {
   "symbol": "GDE",
-  "downloadedAt": "2026-10-21T19:27:49.326Z",
+  "downloadedAt": "2026-10-31T07:49:52.836Z",
   "prices": [
     {
       "date": "2025-09-02",
       "close": 51.400001525878906,
-      "adjustedClose": 49.144798278808594
+      "adjustedClose": 42.28673553466797
     },
     {
       "date": "2025-09-03",
       "close": 52.220001220703125,
-      "adjustedClose": 49.92882537841797
+      "adjustedClose": 42.96134567260742
     },
     {
       "date": "2025-09-04",
       "close": 52.380001068115234,
-      "adjustedClose": 50.08180236816406
+      "adjustedClose": 43.092979431152344
     },
     {
       "date": "2025-09-05",
       "close": 52.83000183105469,
-      "adjustedClose": 50.512062072753906
+      "adjustedClose": 43.463199615478516
     },
     {
       "date": "2025-09-08",
       "close": 53.38999938964844,
-      "adjustedClose": 51.0474853515625
+      "adjustedClose": 43.92390441894531
     },
     {
       "date": "2025-09-09",
       "close": 53.47999954223633,
-      "adjustedClose": 51.13353729248047
+      "adjustedClose": 43.99795150756836
     },
     {
       "date": "2025-09-10",
       "close": 53.709999084472656,
-      "adjustedClose": 51.35344696044922
+      "adjustedClose": 44.18716812133789
     },
     {
       "date": "2025-09-11",
       "close": 54.06999969482422,
-      "adjustedClose": 51.69765090942383
+      "adjustedClose": 44.483341217041016
     },
     {
       "date": "2025-09-12",
       "close": 54.209999084472656,
-      "adjustedClose": 51.83150863647461
+      "adjustedClose": 44.59851837158203
     },
     {
       "date": "2025-09-15",
       "close": 54.869998931884766,
-      "adjustedClose": 52.46255111694336
+      "adjustedClose": 45.14149856567383
     },
     {
       "date": "2025-09-16",
       "close": 54.959999084472656,
-      "adjustedClose": 52.54860305786133
+      "adjustedClose": 45.215545654296875
     },
     {
       "date": "2025-09-17",
       "close": 54.220001220703125,
-      "adjustedClose": 51.84107208251953
+      "adjustedClose": 44.606746673583984
     },
     {
       "date": "2025-09-18",
       "close": 54.369998931884766,
-      "adjustedClose": 51.98448944091797
+      "adjustedClose": 44.73015213012695
     },
     {
       "date": "2025-09-19",
       "close": 55.189998626708984,
-      "adjustedClose": 52.76850891113281
+      "adjustedClose": 45.404762268066406
     },
     {
       "date": "2025-09-22",
       "close": 56.2400016784668,
-      "adjustedClose": 53.77244567871094
+      "adjustedClose": 46.26859664916992
     },
     {
       "date": "2025-09-23",
       "close": 55.9900016784668,
-      "adjustedClose": 53.533409118652344
+      "adjustedClose": 46.062923431396484
     },
     {
       "date": "2025-09-24",
       "close": 55.5,
-      "adjustedClose": 53.06490707397461
+      "adjustedClose": 45.6598014831543
     },
     {
       "date": "2025-09-25",
       "close": 55.290000915527344,
-      "adjustedClose": 52.8641242980957
+      "adjustedClose": 45.48703384399414
     },
     {
       "date": "2025-09-26",
       "close": 55.880001068115234,
-      "adjustedClose": 53.42823791503906
+      "adjustedClose": 45.97242736816406
     },
     {
       "date": "2025-09-29",
       "close": 56.790000915527344,
-      "adjustedClose": 54.29831314086914
+      "adjustedClose": 46.7210807800293
     },
     {
       "date": "2025-09-30",
       "close": 57.40999984741211,
-      "adjustedClose": 54.89110565185547
+      "adjustedClose": 47.23115539550781
     },
     {
       "date": "2025-10-01",
       "close": 57.72999954223633,
-      "adjustedClose": 55.19706726074219
+      "adjustedClose": 47.49441909790039
     },
     {
       "date": "2025-10-02",
       "close": 57.66999816894531,
-      "adjustedClose": 55.13969802856445
+      "adjustedClose": 47.4450569152832
     },
     {
       "date": "2025-10-03",
       "close": 57.970001220703125,
-      "adjustedClose": 55.42654037475586
+      "adjustedClose": 47.691871643066406
     },
     {
       "date": "2025-10-06",
       "close": 59.16999816894531,
-      "adjustedClose": 56.573883056640625
+      "adjustedClose": 48.679107666015625
     },
     {
       "date": "2025-10-07",
       "close": 59.2599983215332,
-      "adjustedClose": 56.659934997558594
+      "adjustedClose": 48.75314712524414
     },
     {
       "date": "2025-10-08",
       "close": 60.369998931884766,
-      "adjustedClose": 57.72123336791992
+      "adjustedClose": 49.66634750366211
     },
     {
       "date": "2025-10-09",
       "close": 59.22999954223633,
-      "adjustedClose": 56.63125228881836
+      "adjustedClose": 48.72846984863281
     },
     {
       "date": "2025-10-10",
       "close": 58.13999938964844,
-      "adjustedClose": 55.58907699584961
+      "adjustedClose": 47.83172607421875
     },
     {
       "date": "2025-10-13",
       "close": 60.290000915527344,
-      "adjustedClose": 57.644744873046875
+      "adjustedClose": 49.60053253173828
     },
     {
       "date": "2025-10-14",
       "close": 60.70000076293945,
-      "adjustedClose": 58.0367546081543
+      "adjustedClose": 49.93783950805664
     },
     {
       "date": "2025-10-15",
       "close": 61.79999923706055,
-      "adjustedClose": 59.08849334716797
+      "adjustedClose": 50.84280776977539
     },
     {
       "date": "2025-10-16",
       "close": 63.0099983215332,
-      "adjustedClose": 60.24540328979492
+      "adjustedClose": 51.83827209472656
     },
     {
       "date": "2025-10-17",
       "close": 62.119998931884766,
-      "adjustedClose": 59.39445114135742
+      "adjustedClose": 51.1060676574707
     },
     {
       "date": "2025-10-20",
       "close": 64.61000061035156,
-      "adjustedClose": 61.775203704833984
+      "adjustedClose": 53.15458679199219
     },
     {
       "date": "2025-10-21",
       "close": 60.77000045776367,
-      "adjustedClose": 58.10368728637695
+      "adjustedClose": 49.995426177978516
     },
     {
       "date": "2025-10-22",
       "close": 60.459999084472656,
-      "adjustedClose": 57.807289123535156
+      "adjustedClose": 49.740386962890625
     },
     {
       "date": "2025-10-23",
       "close": 61.099998474121094,
-      "adjustedClose": 58.41920471191406
+      "adjustedClose": 50.26691436767578
     },
     {
       "date": "2025-10-24",
       "close": 61.349998474121094,
-      "adjustedClose": 58.658233642578125
+      "adjustedClose": 50.472591400146484
     },
     {
       "date": "2025-10-27",
       "close": 60.32500076293945,
-      "adjustedClose": 57.6782112121582
+      "adjustedClose": 49.62932586669922
     },
     {
       "date": "2025-10-28",
       "close": 57.5,
-      "adjustedClose": 57.373878479003906
+      "adjustedClose": 49.367462158203125
     },
     {
       "date": "2025-10-29",
       "close": 57.400001525878906,
-      "adjustedClose": 57.27410125732422
+      "adjustedClose": 49.28160858154297
     },
     {
       "date": "2025-10-30",
       "close": 58.005001068115234,
-      "adjustedClose": 57.87777328491211
+      "adjustedClose": 49.8010368347168
     },
     {
       "date": "2025-10-31",
       "close": 57.875,
-      "adjustedClose": 57.7480583190918
+      "adjustedClose": 49.68942642211914
     },
     {
       "date": "2025-11-03",
       "close": 57.95000076293945,
-      "adjustedClose": 57.82289505004883
+      "adjustedClose": 49.753814697265625
     },
     {
       "date": "2025-11-04",
       "close": 56.349998474121094,
-      "adjustedClose": 56.226402282714844
+      "adjustedClose": 48.38011169433594
     },
     {
       "date": "2025-11-05",
       "close": 57.25,
-      "adjustedClose": 57.124427795410156
+      "adjustedClose": 49.1528205871582
     },
     {
       "date": "2025-11-06",
       "close": 56.54999923706055,
-      "adjustedClose": 56.42596435546875
+      "adjustedClose": 48.55182647705078
     },
     {
       "date": "2025-11-07",
       "close": 57.02000045776367,
-      "adjustedClose": 56.89493179321289
+      "adjustedClose": 48.955352783203125
     },
     {
       "date": "2025-11-10",
       "close": 59.209999084472656,
-      "adjustedClose": 59.08012771606445
+      "adjustedClose": 50.83560562133789
     },
     {
       "date": "2025-11-11",
       "close": 59.66999816894531,
-      "adjustedClose": 59.539119720458984
+      "adjustedClose": 51.23054504394531
     },
     {
       "date": "2025-11-12",
       "close": 60.56999969482422,
-      "adjustedClose": 60.4371452331543
+      "adjustedClose": 52.00325393676758
     },
     {
       "date": "2025-11-13",
       "close": 59.029998779296875,
-      "adjustedClose": 58.9005241394043
+      "adjustedClose": 50.68106460571289
     },
     {
       "date": "2025-11-14",
       "close": 57.970001220703125,
-      "adjustedClose": 57.84284973144531
+      "adjustedClose": 49.770992279052734
     },
     {
       "date": "2025-11-17",
       "close": 56.84000015258789,
-      "adjustedClose": 56.715328216552734
+      "adjustedClose": 48.800811767578125
     },
     {
       "date": "2025-11-18",
       "close": 56.939998626708984,
-      "adjustedClose": 56.81510543823242
+      "adjustedClose": 48.88666534423828
     },
     {
       "date": "2025-11-19",
       "close": 57.209999084472656,
-      "adjustedClose": 57.08451461791992
+      "adjustedClose": 49.11848068237305
     },
     {
       "date": "2025-11-20",
       "close": 56.709999084472656,
-      "adjustedClose": 56.58561325073242
+      "adjustedClose": 48.6891975402832
     },
     {
       "date": "2025-11-21",
       "close": 56.68000030517578,
-      "adjustedClose": 56.55567932128906
+      "adjustedClose": 48.6634407043457
     },
     {
       "date": "2025-11-24",
       "close": 58.220001220703125,
-      "adjustedClose": 58.09230041503906
+      "adjustedClose": 49.98563003540039
     },
     {
       "date": "2025-11-25",
       "close": 58.75,
-      "adjustedClose": 58.62113952636719
+      "adjustedClose": 50.440670013427734
     },
     {
       "date": "2025-11-26",
       "close": 59.619998931884766,
-      "adjustedClose": 59.489227294921875
+      "adjustedClose": 51.187618255615234
     },
     {
       "date": "2025-11-28",
       "close": 60.5,
-      "adjustedClose": 60.3672981262207
+      "adjustedClose": 51.94315719604492
     },
     {
       "date": "2025-12-01",
       "close": 60.599998474121094,
-      "adjustedClose": 60.467079162597656
+      "adjustedClose": 52.02901077270508
     },
     {
       "date": "2025-12-02",
       "close": 60.400001525878906,
-      "adjustedClose": 60.267520904541016
+      "adjustedClose": 51.8572998046875
     },
     {
       "date": "2025-12-03",
       "close": 60.61000061035156,
-      "adjustedClose": 60.47705841064453
+      "adjustedClose": 52.03759765625
     },
     {
       "date": "2025-12-04",
       "close": 60.529998779296875,
-      "adjustedClose": 60.39723205566406
+      "adjustedClose": 51.96891403198242
     },
     {
       "date": "2025-12-05",
       "close": 60.970001220703125,
-      "adjustedClose": 60.83626937866211
+      "adjustedClose": 52.346683502197266
     },
     {
       "date": "2025-12-08",
       "close": 60.185001373291016,
-      "adjustedClose": 60.05299377441406
+      "adjustedClose": 51.67271041870117
     },
     {
       "date": "2025-12-09",
       "close": 60.439998626708984,
-      "adjustedClose": 60.307430267333984
+      "adjustedClose": 51.89164352416992
     },
     {
       "date": "2025-12-10",
       "close": 60.93000030517578,
-      "adjustedClose": 60.796356201171875
+      "adjustedClose": 52.312339782714844
     },
     {
       "date": "2025-12-11",
       "close": 61.619998931884766,
-      "adjustedClose": 61.484840393066406
+      "adjustedClose": 52.904747009277344
     },
     {
       "date": "2025-12-12",
       "close": 61.2599983215332,
-      "adjustedClose": 61.12562942504883
+      "adjustedClose": 52.595664978027344
     },
     {
       "date": "2025-12-15",
       "close": 61.58000183105469,
-      "adjustedClose": 61.44493103027344
+      "adjustedClose": 52.87041091918945
     },
     {
       "date": "2025-12-16",
       "close": 61.439998626708984,
-      "adjustedClose": 61.30523681640625
+      "adjustedClose": 52.750205993652344
     },
     {
       "date": "2025-12-17",
       "close": 61,
-      "adjustedClose": 60.86620330810547
+      "adjustedClose": 52.3724365234375
     },
     {
       "date": "2025-12-18",
       "close": 61.5,
-      "adjustedClose": 61.36510467529297
+      "adjustedClose": 52.801719665527344
     },
     {
       "date": "2025-12-19",
       "close": 62.22999954223633,
-      "adjustedClose": 62.093505859375
+      "adjustedClose": 53.42847442626953
     },
     {
       "date": "2025-12-22",
       "close": 63.630001068115234,
-      "adjustedClose": 63.49043655395508
+      "adjustedClose": 54.630462646484375
     },
     {
       "date": "2025-12-23",
       "close": 64.69999694824219,
-      "adjustedClose": 64.5580825805664
+      "adjustedClose": 55.54912567138672
     },
     {
       "date": "2025-12-24",
       "close": 64.73999786376953,
-      "adjustedClose": 64.5979995727539
+      "adjustedClose": 55.58346939086914
     },
     {
       "date": "2025-12-26",
       "close": 65.29000091552734,
-      "adjustedClose": 65.29000091552734
+      "adjustedClose": 56.17890548706055
     },
     {
       "date": "2025-12-29",
       "close": 62.45000076293945,
-      "adjustedClose": 62.45000076293945
+      "adjustedClose": 53.73522186279297
     },
     {
       "date": "2025-12-30",
       "close": 62.43000030517578,
-      "adjustedClose": 62.43000030517578
+      "adjustedClose": 53.71800994873047
     },
     {
       "date": "2025-12-31",
       "close": 61.619998931884766,
-      "adjustedClose": 61.619998931884766
+      "adjustedClose": 53.02104187011719
     },
     {
       "date": "2026-01-02",
       "close": 61.7599983215332,
-      "adjustedClose": 61.7599983215332
+      "adjustedClose": 53.14150619506836
     },
     {
       "date": "2026-01-05",
       "close": 63.61000061035156,
-      "adjustedClose": 63.61000061035156
+      "adjustedClose": 54.73334503173828
     },
     {
       "date": "2026-01-06",
       "close": 64.7300033569336,
-      "adjustedClose": 64.7300033569336
+      "adjustedClose": 55.697052001953125
     },
     {
       "date": "2026-01-07",
       "close": 63.79499816894531,
-      "adjustedClose": 63.79499816894531
+      "adjustedClose": 54.89252471923828
     },
     {
       "date": "2026-01-08",
       "close": 64.0999984741211,
-      "adjustedClose": 64.0999984741211
+      "adjustedClose": 55.154964447021484
     },
     {
       "date": "2026-01-09",
       "close": 64.94000244140625,
-      "adjustedClose": 64.94000244140625
+      "adjustedClose": 55.87774658203125
     },
     {
       "date": "2026-01-12",
       "close": 66.08000183105469,
-      "adjustedClose": 66.08000183105469
+      "adjustedClose": 56.85866165161133
     },
     {
       "date": "2026-01-13",
       "close": 65.9000015258789,
-      "adjustedClose": 65.9000015258789
+      "adjustedClose": 56.70378112792969
     },
     {
       "date": "2026-01-14",
       "close": 66.05999755859375,
-      "adjustedClose": 66.05999755859375
+      "adjustedClose": 56.84144973754883
     },
     {
       "date": "2026-01-15",
       "close": 66.08000183105469,
-      "adjustedClose": 66.08000183105469
+      "adjustedClose": 56.85866165161133
     },
     {
       "date": "2026-01-16",
       "close": 65.69999694824219,
-      "adjustedClose": 65.69999694824219
+      "adjustedClose": 56.53168487548828
     },
     {
       "date": "2026-01-20",
       "close": 66.2699966430664,
-      "adjustedClose": 66.2699966430664
+      "adjustedClose": 57.02214431762695
     },
     {
       "date": "2026-01-21",
       "close": 68.02999877929688,
-      "adjustedClose": 68.02999877929688
+      "adjustedClose": 58.53654098510742
     },
     {
       "date": "2026-01-22",
       "close": 69.69999694824219,
-      "adjustedClose": 69.69999694824219
+      "adjustedClose": 59.97349166870117
     },
     {
       "date": "2026-01-23",
       "close": 70.47000122070312,
-      "adjustedClose": 70.47000122070312
+      "adjustedClose": 60.636043548583984
     },
     {
       "date": "2026-01-26",
       "close": 71.25,
-      "adjustedClose": 71.25
+      "adjustedClose": 61.30719757080078
     },
     {
       "date": "2026-01-27",
       "close": 73.55000305175781,
-      "adjustedClose": 73.55000305175781
+      "adjustedClose": 63.28623962402344
     },
     {
       "date": "2026-01-28",
       "close": 76.16000366210938,
-      "adjustedClose": 76.16000366210938
+      "adjustedClose": 65.53202056884766
     },
     {
       "date": "2026-01-29",
       "close": 75.73999786376953,
-      "adjustedClose": 75.73999786376953
+      "adjustedClose": 65.17062377929688
     },
     {
       "date": "2026-01-30",
       "close": 68.8499984741211,
-      "adjustedClose": 68.8499984741211
+      "adjustedClose": 59.24211120605469
     },
     {
       "date": "2026-02-02",
       "close": 66.41999816894531,
-      "adjustedClose": 66.41999816894531
+      "adjustedClose": 57.15121078491211
     },
     {
       "date": "2026-02-03",
       "close": 69.54000091552734,
-      "adjustedClose": 69.54000091552734
+      "adjustedClose": 59.83582305908203
     },
     {
       "date": "2026-02-04",
       "close": 69.05000305175781,
-      "adjustedClose": 69.05000305175781
+      "adjustedClose": 59.41420364379883
     },
     {
       "date": "2026-02-05",
       "close": 66.80000305175781,
-      "adjustedClose": 66.80000305175781
+      "adjustedClose": 57.478187561035156
     },
     {
       "date": "2026-02-06",
       "close": 69.97000122070312,
-      "adjustedClose": 69.97000122070312
+      "adjustedClose": 60.20581817626953
     },
     {
       "date": "2026-02-09",
       "close": 72,
-      "adjustedClose": 72
+      "adjustedClose": 61.95253372192383
     },
     {
       "date": "2026-02-10",
       "close": 71.16000366210938,
-      "adjustedClose": 71.16000366210938
+      "adjustedClose": 61.229759216308594
     },
     {
       "date": "2026-02-11",
       "close": 71.66999816894531,
-      "adjustedClose": 71.66999816894531
+      "adjustedClose": 61.668582916259766
     },
     {
       "date": "2026-02-12",
       "close": 68.69000244140625,
-      "adjustedClose": 68.69000244140625
+      "adjustedClose": 59.10444259643555
     },
     {
       "date": "2026-02-13",
       "close": 70,
-      "adjustedClose": 70
+      "adjustedClose": 60.231632232666016
     },
     {
       "date": "2026-02-17",
       "close": 68.30999755859375,
-      "adjustedClose": 68.30999755859375
+      "adjustedClose": 58.7774658203125
     },
     {
       "date": "2026-02-18",
       "close": 69.43000030517578,
-      "adjustedClose": 69.43000030517578
+      "adjustedClose": 59.741172790527344
     },
     {
       "date": "2026-02-19",
       "close": 69.83999633789062,
-      "adjustedClose": 69.83999633789062
+      "adjustedClose": 60.093955993652344
     },
     {
       "date": "2026-02-20",
       "close": 71.05999755859375,
-      "adjustedClose": 71.05999755859375
+      "adjustedClose": 61.143707275390625
     },
     {
       "date": "2026-02-23",
       "close": 72.62000274658203,
-      "adjustedClose": 72.62000274658203
+      "adjustedClose": 62.486019134521484
     },
     {
       "date": "2026-02-24",
       "close": 72.1500015258789,
-      "adjustedClose": 72.1500015258789
+      "adjustedClose": 62.08160400390625
     },
     {
       "date": "2026-02-25",
       "close": 72.61000061035156,
-      "adjustedClose": 72.61000061035156
+      "adjustedClose": 62.477413177490234
     },
     {
       "date": "2026-02-26",
       "close": 72.22000122070312,
-      "adjustedClose": 72.22000122070312
+      "adjustedClose": 62.1418342590332
     },
     {
       "date": "2026-02-27",
       "close": 72.76000213623047,
-      "adjustedClose": 72.76000213623047
+      "adjustedClose": 62.60647964477539
     },
     {
       "date": "2026-03-02",
       "close": 74.30000305175781,
-      "adjustedClose": 74.30000305175781
+      "adjustedClose": 63.931575775146484
     },
     {
       "date": "2026-03-03",
       "close": 70.29000091552734,
-      "adjustedClose": 70.29000091552734
+      "adjustedClose": 60.481163024902344
     },
     {
       "date": "2026-03-04",
       "close": 71.6500015258789,
-      "adjustedClose": 71.6500015258789
+      "adjustedClose": 61.6513786315918
     },
     {
       "date": "2026-03-05",
       "close": 70.05999755859375,
-      "adjustedClose": 70.05999755859375
+      "adjustedClose": 60.28325653076172
     },
     {
       "date": "2026-03-06",
       "close": 70.20999908447266,
-      "adjustedClose": 70.20999908447266
+      "adjustedClose": 60.41232681274414
     },
     {
       "date": "2026-03-09",
       "close": 70.16000366210938,
-      "adjustedClose": 70.16000366210938
+      "adjustedClose": 60.36930847167969
     },
     {
       "date": "2026-03-10",
       "close": 71.30000305175781,
-      "adjustedClose": 71.30000305175781
+      "adjustedClose": 61.3502197265625
     },
     {
       "date": "2026-03-11",
       "close": 71.44999694824219,
-      "adjustedClose": 71.44999694824219
+      "adjustedClose": 61.47928237915039
     },
     {
       "date": "2026-03-12",
       "close": 69.16000366210938,
-      "adjustedClose": 69.16000366210938
+      "adjustedClose": 59.508853912353516
     },
     {
       "date": "2026-03-13",
       "close": 67.97000122070312,
-      "adjustedClose": 67.97000122070312
+      "adjustedClose": 58.48491668701172
     },
     {
       "date": "2026-03-16",
       "close": 68.62999725341797,
-      "adjustedClose": 68.62999725341797
+      "adjustedClose": 59.05281066894531
     },
     {
       "date": "2026-03-17",
       "close": 68.25,
-      "adjustedClose": 68.25
+      "adjustedClose": 58.7258415222168
     },
     {
       "date": "2026-03-18",
       "close": 65.75,
-      "adjustedClose": 65.75
+      "adjustedClose": 56.574710845947266
     },
     {
       "date": "2026-03-19",
       "close": 63.04999923706055,
-      "adjustedClose": 63.04999923706055
+      "adjustedClose": 54.25149154663086
     },
     {
       "date": "2026-03-20",
       "close": 60.4900016784668,
-      "adjustedClose": 60.4900016784668
+      "adjustedClose": 52.048736572265625
     },
     {
       "date": "2026-03-23",
       "close": 60.18000030517578,
-      "adjustedClose": 60.18000030517578
+      "adjustedClose": 51.7819938659668
     },
     {
       "date": "2026-03-24",
       "close": 59.5,
-      "adjustedClose": 59.5
+      "adjustedClose": 51.1968879699707
     },
     {
       "date": "2026-03-25",
       "close": 61.5,
-      "adjustedClose": 61.5
+      "adjustedClose": 52.917789459228516
     },
     {
       "date": "2026-03-26",
       "close": 58.900001525878906,
-      "adjustedClose": 58.900001525878906
+      "adjustedClose": 50.68061828613281
     },
     {
       "date": "2026-03-27",
       "close": 59.25,
-      "adjustedClose": 59.25
+      "adjustedClose": 50.981773376464844
     },
     {
       "date": "2026-03-30",
       "close": 59.39500045776367,
-      "adjustedClose": 59.39500045776367
+      "adjustedClose": 51.10654067993164
     },
     {
       "date": "2026-03-31",
       "close": 62.900001525878906,
-      "adjustedClose": 62.900001525878906
+      "adjustedClose": 54.1224250793457
     },
     {
       "date": "2026-04-01",
       "close": 63.91999816894531,
-      "adjustedClose": 63.91999816894531
+      "adjustedClose": 55.000083923339844
     },
     {
       "date": "2026-04-02",
       "close": 63.130001068115234,
-      "adjustedClose": 63.130001068115234
+      "adjustedClose": 54.32032775878906
     },
     {
       "date": "2026-04-06",
       "close": 63.2599983215332,
-      "adjustedClose": 63.2599983215332
+      "adjustedClose": 54.432186126708984
     },
     {
       "date": "2026-04-07",
       "close": 63.529998779296875,
-      "adjustedClose": 63.529998779296875
+      "adjustedClose": 54.66450500488281
     },
     {
       "date": "2026-04-08",
       "close": 65.7699966430664,
-      "adjustedClose": 65.7699966430664
+      "adjustedClose": 56.5919189453125
     },
     {
       "date": "2026-04-09",
       "close": 66.19000244140625,
-      "adjustedClose": 66.19000244140625
+      "adjustedClose": 56.953311920166016
     },
     {
       "date": "2026-04-10",
       "close": 65.86000061035156,
-      "adjustedClose": 65.86000061035156
+      "adjustedClose": 56.66936111450195
     },
     {
       "date": "2026-04-13",
       "close": 66.4800033569336,
-      "adjustedClose": 66.4800033569336
+      "adjustedClose": 57.202842712402344
     },
     {
       "date": "2026-04-14",
       "close": 68.7300033569336,
-      "adjustedClose": 68.7300033569336
+      "adjustedClose": 59.138858795166016
     },
     {
       "date": "2026-04-15",
       "close": 68.1500015258789,
-      "adjustedClose": 68.1500015258789
+      "adjustedClose": 58.63979721069336
     },
     {
       "date": "2026-04-16",
       "close": 68.20999908447266,
-      "adjustedClose": 68.20999908447266
+      "adjustedClose": 58.69142150878906
     },
     {
       "date": "2026-04-17",
       "close": 69.80999755859375,
-      "adjustedClose": 69.80999755859375
+      "adjustedClose": 60.06814193725586
     },
     {
       "date": "2026-04-20",
       "close": 69.05000305175781,
-      "adjustedClose": 69.05000305175781
+      "adjustedClose": 59.41420364379883
     },
     {
       "date": "2026-04-21",
       "close": 67.41999816894531,
-      "adjustedClose": 67.41999816894531
+      "adjustedClose": 58.01166534423828
     },
     {
       "date": "2026-04-22",
       "close": 68.40599822998047,
-      "adjustedClose": 68.40599822998047
+      "adjustedClose": 58.860069274902344
     },
     {
       "date": "2026-04-23",
       "close": 67.62000274658203,
-      "adjustedClose": 67.62000274658203
+      "adjustedClose": 58.18375778198242
     },
     {
       "date": "2026-04-24",
       "close": 68.12000274658203,
-      "adjustedClose": 68.12000274658203
+      "adjustedClose": 58.613983154296875
     },
     {
       "date": "2026-04-27",
       "close": 68,
-      "adjustedClose": 68
+      "adjustedClose": 58.51072692871094
     },
     {
       "date": "2026-04-28",
       "close": 66.69999694824219,
-      "adjustedClose": 66.69999694824219
+      "adjustedClose": 57.39213943481445
     },
     {
       "date": "2026-04-29",
       "close": 65.77999877929688,
-      "adjustedClose": 65.77999877929688
+      "adjustedClose": 56.60052490234375
     },
     {
       "date": "2026-04-30",
       "close": 67.5999984741211,
-      "adjustedClose": 67.5999984741211
+      "adjustedClose": 58.16654586791992
     },
     {
       "date": "2026-05-01",
       "close": 67.73999786376953,
-      "adjustedClose": 67.73999786376953
+      "adjustedClose": 58.287010192871094
     },
     {
       "date": "2026-05-04",
       "close": 66.41000366210938,
-      "adjustedClose": 66.41000366210938
+      "adjustedClose": 57.14261245727539
     },
     {
       "date": "2026-05-05",
       "close": 67.16000366210938,
-      "adjustedClose": 67.16000366210938
+      "adjustedClose": 57.7879524230957
     },
     {
       "date": "2026-05-06",
       "close": 69.62999725341797,
-      "adjustedClose": 69.62999725341797
+      "adjustedClose": 59.91326141357422
     },
     {
       "date": "2026-05-07",
       "close": 69.5,
-      "adjustedClose": 69.5
+      "adjustedClose": 59.80140686035156
     },
     {
       "date": "2026-05-08",
       "close": 70.4000015258789,
-      "adjustedClose": 70.4000015258789
+      "adjustedClose": 60.57581329345703
     },
     {
       "date": "2026-05-11",
       "close": 70.38999938964844,
-      "adjustedClose": 70.38999938964844
+      "adjustedClose": 60.56720733642578
     },
     {
       "date": "2026-05-12",
       "close": 70,
-      "adjustedClose": 70
+      "adjustedClose": 60.231632232666016
     },
     {
       "date": "2026-05-13",
       "close": 70,
-      "adjustedClose": 70
+      "adjustedClose": 60.231632232666016
     },
     {
       "date": "2026-05-14",
       "close": 70.02999877929688,
-      "adjustedClose": 70.02999877929688
+      "adjustedClose": 60.257442474365234
     },
     {
       "date": "2026-05-15",
       "close": 67.91999816894531,
-      "adjustedClose": 67.91999816894531
+      "adjustedClose": 58.441890716552734
     },
     {
       "date": "2026-05-18",
       "close": 68.07499694824219,
-      "adjustedClose": 68.07499694824219
+      "adjustedClose": 58.575260162353516
     },
     {
       "date": "2026-05-19",
       "close": 67.05000305175781,
-      "adjustedClose": 67.05000305175781
+      "adjustedClose": 57.693302154541016
     },
     {
       "date": "2026-05-20",
       "close": 68.4800033569336,
-      "adjustedClose": 68.4800033569336
+      "adjustedClose": 58.92374801635742
     },
     {
       "date": "2026-05-21",
       "close": 68.33000183105469,
-      "adjustedClose": 68.33000183105469
+      "adjustedClose": 58.794677734375
     },
     {
       "date": "2026-05-22",
       "close": 68.1500015258789,
-      "adjustedClose": 68.1500015258789
+      "adjustedClose": 58.63979721069336
     },
     {
       "date": "2026-05-26",
       "close": 68.18000030517578,
-      "adjustedClose": 68.18000030517578
+      "adjustedClose": 58.66560745239258
     },
     {
       "date": "2026-05-27",
       "close": 67.43000030517578,
-      "adjustedClose": 67.43000030517578
+      "adjustedClose": 58.02027130126953
     },
     {
       "date": "2026-05-28",
       "close": 68.5999984741211,
-      "adjustedClose": 68.5999984741211
+      "adjustedClose": 59.02699661254883
     },
     {
       "date": "2026-05-29",
       "close": 69.5,
-      "adjustedClose": 69.5
+      "adjustedClose": 59.80140686035156
     },
     {
       "date": "2026-06-01",
       "close": 68.53500366210938,
-      "adjustedClose": 68.53500366210938
+      "adjustedClose": 58.971073150634766
     },
     {
       "date": "2026-06-02",
       "close": 68.58000183105469,
-      "adjustedClose": 68.58000183105469
+      "adjustedClose": 59.00979232788086
     },
     {
       "date": "2026-06-03",
       "close": 67.65599822998047,
-      "adjustedClose": 67.65599822998047
+      "adjustedClose": 58.21472930908203
     },
     {
       "date": "2026-06-04",
       "close": 68.55500030517578,
-      "adjustedClose": 68.55500030517578
+      "adjustedClose": 58.988277435302734
     },
     {
       "date": "2026-06-05",
       "close": 64.55000305175781,
-      "adjustedClose": 64.55000305175781
+      "adjustedClose": 55.542171478271484
     },
     {
       "date": "2026-06-08",
       "close": 65.16000366210938,
-      "adjustedClose": 65.16000366210938
+      "adjustedClose": 56.067047119140625
     },
     {
       "date": "2026-06-09",
       "close": 63.63999938964844,
-      "adjustedClose": 63.63999938964844
+      "adjustedClose": 54.7591552734375
     },
     {
       "date": "2026-06-10",
       "close": 60.5,
-      "adjustedClose": 60.5
+      "adjustedClose": 52.05733871459961
     },
     {
       "date": "2026-06-11",
       "close": 63.150001525878906,
-      "adjustedClose": 63.150001525878906
+      "adjustedClose": 54.3375358581543
     },
     {
       "date": "2026-06-12",
       "close": 63.56999969482422,
-      "adjustedClose": 63.56999969482422
+      "adjustedClose": 54.69892501831055
     },
     {
       "date": "2026-06-15",
       "close": 65.66999816894531,
-      "adjustedClose": 65.66999816894531
+      "adjustedClose": 56.50587463378906
     },
     {
       "date": "2026-06-16",
       "close": 65.73999786376953,
-      "adjustedClose": 65.73999786376953
+      "adjustedClose": 56.566104888916016
     },
     {
       "date": "2026-06-17",
       "close": 63.79999923706055,
-      "adjustedClose": 63.79999923706055
+      "adjustedClose": 54.896827697753906
     },
     {
       "date": "2026-06-18",
       "close": 63.98500061035156,
-      "adjustedClose": 63.98500061035156
+      "adjustedClose": 55.05601501464844
     },
     {
       "date": "2026-06-22",
       "close": 63.29999923706055,
-      "adjustedClose": 63.29999923706055
+      "adjustedClose": 54.46660232543945
     },
     {
       "date": "2026-06-23",
       "close": 61.310001373291016,
-      "adjustedClose": 61.310001373291016
+      "adjustedClose": 52.75430679321289
     },
     {
       "date": "2026-06-24",
       "close": 59.540000915527344,
-      "adjustedClose": 59.540000915527344
+      "adjustedClose": 51.23130416870117
     },
     {
       "date": "2026-06-25",
       "close": 59.900001525878906,
-      "adjustedClose": 59.900001525878906
+      "adjustedClose": 51.54106903076172
     },
     {
       "date": "2026-06-26",
       "close": 60.66999816894531,
-      "adjustedClose": 60.66999816894531
+      "adjustedClose": 52.20361328125
     },
     {
       "date": "2026-06-29",
       "close": 60.74700164794922,
-      "adjustedClose": 60.74700164794922
+      "adjustedClose": 52.26987075805664
     },
     {
       "date": "2026-06-30",
       "close": 61.095001220703125,
-      "adjustedClose": 61.095001220703125
+      "adjustedClose": 52.56930923461914
     },
     {
       "date": "2026-07-01",
       "close": 61.540000915527344,
-      "adjustedClose": 61.540000915527344
+      "adjustedClose": 52.95220947265625
     },
     {
       "date": "2026-07-02",
       "close": 62.060001373291016,
-      "adjustedClose": 62.060001373291016
+      "adjustedClose": 53.39964294433594
     },
     {
       "date": "2026-07-06",
       "close": 63.560001373291016,
-      "adjustedClose": 63.560001373291016
+      "adjustedClose": 54.69032287597656
     },
     {
       "date": "2026-07-07",
       "close": 62.64099884033203,
-      "adjustedClose": 62.64099884033203
+      "adjustedClose": 53.899566650390625
     },
     {
       "date": "2026-07-08",
       "close": 62,
-      "adjustedClose": 62
+      "adjustedClose": 53.34801483154297
     },
     {
       "date": "2026-07-09",
       "close": 62.845001220703125,
-      "adjustedClose": 62.845001220703125
+      "adjustedClose": 54.07509994506836
     },
     {
       "date": "2026-07-10",
       "close": 62.90999984741211,
-      "adjustedClose": 62.90999984741211
+      "adjustedClose": 54.13102722167969
     },
     {
       "date": "2026-07-13",
       "close": 60.93000030517578,
-      "adjustedClose": 60.93000030517578
+      "adjustedClose": 52.42733383178711
     },
     {
       "date": "2026-07-14",
       "close": 62.060001373291016,
-      "adjustedClose": 62.060001373291016
+      "adjustedClose": 53.39964294433594
     },
     {
       "date": "2026-07-15",
       "close": 62.16999816894531,
-      "adjustedClose": 62.16999816894531
+      "adjustedClose": 53.494293212890625
     },
     {
       "date": "2026-07-16",
       "close": 60.72999954223633,
-      "adjustedClose": 60.72999954223633
+      "adjustedClose": 52.25524139404297
     },
     {
       "date": "2026-07-17",
       "close": 60.939998626708984,
-      "adjustedClose": 60.939998626708984
+      "adjustedClose": 52.435935974121094
     },
     {
       "date": "2026-07-20",
       "close": 60.81999969482422,
-      "adjustedClose": 60.81999969482422
+      "adjustedClose": 52.33268356323242
     },
     {
       "date": "2026-07-21",
       "close": 62.13999938964844,
-      "adjustedClose": 62.13999938964844
+      "adjustedClose": 53.46847915649414
     },
     {
       "date": "2026-07-22",
       "close": 62.849998474121094,
-      "adjustedClose": 62.849998474121094
+      "adjustedClose": 54.07939910888672
     },
     {
       "date": "2026-07-23",
       "close": 60.560001373291016,
-      "adjustedClose": 60.560001373291016
+      "adjustedClose": 52.10896682739258
     },
     {
       "date": "2026-07-24",
       "close": 60.619998931884766,
-      "adjustedClose": 60.619998931884766
+      "adjustedClose": 52.16059112548828
     },
     {
       "date": "2026-07-27",
       "close": 61.099998474121094,
-      "adjustedClose": 61.099998474121094
+      "adjustedClose": 52.5736083984375
     },
     {
       "date": "2026-07-28",
       "close": 60.40999984741211,
-      "adjustedClose": 60.40999984741211
+      "adjustedClose": 51.979896545410156
     },
     {
       "date": "2026-07-29",
       "close": 59.900001525878906,
-      "adjustedClose": 59.900001525878906
+      "adjustedClose": 51.54106903076172
     },
     {
       "date": "2026-07-30",
       "close": 61.540000915527344,
-      "adjustedClose": 61.540000915527344
+      "adjustedClose": 52.95220947265625
     },
     {
       "date": "2026-07-31",
       "close": 61.099998474121094,
-      "adjustedClose": 61.099998474121094
+      "adjustedClose": 52.5736083984375
     },
     {
       "date": "2026-08-03",
       "close": 62.130001068115234,
-      "adjustedClose": 62.130001068115234
+      "adjustedClose": 53.459877014160156
     },
     {
       "date": "2026-08-04",
       "close": 63.29999923706055,
-      "adjustedClose": 63.29999923706055
+      "adjustedClose": 54.46660232543945
     },
     {
       "date": "2026-08-05",
       "close": 65.4000015258789,
-      "adjustedClose": 65.4000015258789
+      "adjustedClose": 56.273555755615234
     },
     {
       "date": "2026-08-06",
       "close": 65.68000030517578,
-      "adjustedClose": 65.68000030517578
+      "adjustedClose": 56.51448059082031
     },
     {
       "date": "2026-08-07",
       "close": 67.33000183105469,
-      "adjustedClose": 67.33000183105469
+      "adjustedClose": 57.934226989746094
     },
     {
       "date": "2026-08-10",
       "close": 67.98999786376953,
-      "adjustedClose": 67.98999786376953
+      "adjustedClose": 58.50212097167969
     },
     {
       "date": "2026-08-11",
       "close": 67.30999755859375,
-      "adjustedClose": 67.30999755859375
+      "adjustedClose": 57.917015075683594
     },
     {
       "date": "2026-08-12",
       "close": 67.97000122070312,
-      "adjustedClose": 67.97000122070312
+      "adjustedClose": 58.48491668701172
     },
     {
       "date": "2026-08-13",
       "close": 67.63600158691406,
-      "adjustedClose": 67.63600158691406
+      "adjustedClose": 58.19752502441406
     },
     {
       "date": "2026-08-14",
       "close": 67.94999694824219,
-      "adjustedClose": 67.94999694824219
+      "adjustedClose": 58.46770095825195
     },
     {
       "date": "2026-08-17",
       "close": 68,
-      "adjustedClose": 68
+      "adjustedClose": 58.51072692871094
     },
     {
       "date": "2026-08-18",
       "close": 66.81999969482422,
-      "adjustedClose": 66.81999969482422
+      "adjustedClose": 57.49539566040039
     },
     {
       "date": "2026-08-19",
       "close": 69.12000274658203,
-      "adjustedClose": 69.12000274658203
+      "adjustedClose": 59.47443771362305
     },
     {
       "date": "2026-08-20",
       "close": 69.0999984741211,
-      "adjustedClose": 69.0999984741211
+      "adjustedClose": 59.45722198486328
     },
     {
       "date": "2026-08-21",
       "close": 70.58000183105469,
-      "adjustedClose": 70.58000183105469
+      "adjustedClose": 60.73069381713867
     },
     {
       "date": "2026-08-24",
       "close": 70.81999969482422,
-      "adjustedClose": 70.81999969482422
+      "adjustedClose": 60.93720245361328
     },
     {
       "date": "2026-08-25",
       "close": 71.30000305175781,
-      "adjustedClose": 71.30000305175781
+      "adjustedClose": 61.3502197265625
     },
     {
       "date": "2026-08-26",
       "close": 70.22000122070312,
-      "adjustedClose": 70.22000122070312
+      "adjustedClose": 60.42093276977539
     },
     {
       "date": "2026-08-27",
       "close": 70.38999938964844,
-      "adjustedClose": 70.38999938964844
+      "adjustedClose": 60.56720733642578
     },
     {
       "date": "2026-08-28",
       "close": 68.44000244140625,
-      "adjustedClose": 68.44000244140625
+      "adjustedClose": 58.88932800292969
     },
     {
       "date": "2026-08-31",
       "close": 68.01000213623047,
-      "adjustedClose": 68.01000213623047
+      "adjustedClose": 58.51933288574219
     },
     {
       "date": "2026-09-01",
       "close": 66.16999816894531,
-      "adjustedClose": 66.16999816894531
+      "adjustedClose": 56.936100006103516
     },
     {
       "date": "2026-09-02",
       "close": 67.06999969482422,
-      "adjustedClose": 67.06999969482422
+      "adjustedClose": 57.710506439208984
     },
     {
       "date": "2026-09-03",
       "close": 68.91000366210938,
-      "adjustedClose": 68.91000366210938
+      "adjustedClose": 59.29374313354492
     },
     {
       "date": "2026-09-04",
       "close": 68.19999694824219,
-      "adjustedClose": 68.19999694824219
+      "adjustedClose": 58.68281555175781
     },
     {
       "date": "2026-09-08",
       "close": 66.77999877929688,
-      "adjustedClose": 66.77999877929688
+      "adjustedClose": 57.460975646972656
     },
     {
       "date": "2026-09-09",
       "close": 67.05000305175781,
-      "adjustedClose": 67.05000305175781
+      "adjustedClose": 57.693302154541016
     },
     {
       "date": "2026-09-10",
       "close": 65.53099822998047,
-      "adjustedClose": 65.53099822998047
+      "adjustedClose": 56.386268615722656
     },
     {
       "date": "2026-09-11",
       "close": 66.44999694824219,
-      "adjustedClose": 66.44999694824219
+      "adjustedClose": 57.177024841308594
     },
     {
       "date": "2026-09-14",
       "close": 65.45999908447266,
-      "adjustedClose": 65.45999908447266
+      "adjustedClose": 56.32518005371094
     },
     {
       "date": "2026-09-15",
       "close": 65.23600006103516,
-      "adjustedClose": 65.23600006103516
+      "adjustedClose": 56.13243865966797
     },
     {
       "date": "2026-09-16",
       "close": 64.72000122070312,
-      "adjustedClose": 64.72000122070312
+      "adjustedClose": 55.688446044921875
     },
     {
       "date": "2026-09-17",
       "close": 66.27200317382812,
-      "adjustedClose": 66.27200317382812
+      "adjustedClose": 57.023868560791016
     },
     {
       "date": "2026-09-18",
       "close": 66.77999877929688,
-      "adjustedClose": 66.77999877929688
+      "adjustedClose": 57.460975646972656
     },
     {
       "date": "2026-09-21",
       "close": 67.2699966430664,
-      "adjustedClose": 67.2699966430664
+      "adjustedClose": 57.88259506225586
     },
     {
       "date": "2026-09-22",
       "close": 67.5,
-      "adjustedClose": 67.5
+      "adjustedClose": 58.080501556396484
     },
     {
       "date": "2026-09-23",
       "close": 65.69000244140625,
-      "adjustedClose": 65.69000244140625
+      "adjustedClose": 56.52308654785156
     },
     {
       "date": "2026-09-24",
       "close": 65.61000061035156,
-      "adjustedClose": 65.61000061035156
+      "adjustedClose": 56.454246520996094
     },
     {
       "date": "2026-09-25",
       "close": 66.16500091552734,
-      "adjustedClose": 66.16500091552734
+      "adjustedClose": 56.931800842285156
     },
     {
       "date": "2026-09-28",
       "close": 63.38999938964844,
-      "adjustedClose": 63.38999938964844
+      "adjustedClose": 54.544044494628906
     },
     {
       "date": "2026-09-29",
       "close": 64,
-      "adjustedClose": 64
+      "adjustedClose": 55.06892013549805
     },
     {
       "date": "2026-09-30",
       "close": 63.72999954223633,
-      "adjustedClose": 63.72999954223633
+      "adjustedClose": 54.83659744262695
     },
     {
       "date": "2026-10-01",
       "close": 63.84000015258789,
-      "adjustedClose": 63.84000015258789
+      "adjustedClose": 54.93124771118164
     },
     {
       "date": "2026-10-02",
       "close": 64.0999984741211,
-      "adjustedClose": 64.0999984741211
+      "adjustedClose": 55.154964447021484
     },
     {
       "date": "2026-10-05",
       "close": 64.37999725341797,
-      "adjustedClose": 64.37999725341797
+      "adjustedClose": 55.39588928222656
     },
     {
       "date": "2026-10-06",
       "close": 65.12999725341797,
-      "adjustedClose": 65.12999725341797
+      "adjustedClose": 56.041229248046875
     },
     {
       "date": "2026-10-07",
       "close": 63.7599983215332,
-      "adjustedClose": 63.7599983215332
+      "adjustedClose": 54.86241149902344
     },
     {
       "date": "2026-10-08",
       "close": 64,
-      "adjustedClose": 64
+      "adjustedClose": 55.06892013549805
     },
     {
       "date": "2026-10-09",
       "close": 65.12000274658203,
-      "adjustedClose": 65.12000274658203
+      "adjustedClose": 56.03262710571289
     },
     {
       "date": "2026-10-12",
       "close": 64.70999908447266,
-      "adjustedClose": 64.70999908447266
+      "adjustedClose": 55.679840087890625
     },
     {
       "date": "2026-10-13",
       "close": 64.94000244140625,
-      "adjustedClose": 64.94000244140625
+      "adjustedClose": 55.87774658203125
     },
     {
       "date": "2026-10-14",
       "close": 63.369998931884766,
-      "adjustedClose": 63.369998931884766
+      "adjustedClose": 54.52683639526367
     },
     {
       "date": "2026-10-15",
       "close": 64.44000244140625,
-      "adjustedClose": 64.44000244140625
+      "adjustedClose": 55.4475212097168
     },
     {
       "date": "2026-10-16",
       "close": 63.75,
-      "adjustedClose": 63.75
+      "adjustedClose": 54.85380554199219
     },
     {
       "date": "2026-10-19",
       "close": 63.5,
-      "adjustedClose": 63.5
+      "adjustedClose": 54.638694763183594
     },
     {
       "date": "2026-10-20",
       "close": 63.31999969482422,
-      "adjustedClose": 63.31999969482422
+      "adjustedClose": 54.48381423950195
     },
     {
       "date": "2026-10-21",
-      "close": 63.68000030517578,
-      "adjustedClose": 63.68000030517578
+      "close": 64.05000305175781,
+      "adjustedClose": 55.11194610595703
+    },
+    {
+      "date": "2026-10-22",
+      "close": 61.66999816894531,
+      "adjustedClose": 53.064064025878906
+    },
+    {
+      "date": "2026-10-23",
+      "close": 61.099998474121094,
+      "adjustedClose": 52.5736083984375
+    },
+    {
+      "date": "2026-10-26",
+      "close": 61.52000045776367,
+      "adjustedClose": 52.935001373291016
+    },
+    {
+      "date": "2026-10-27",
+      "close": 54.099998474121094,
+      "adjustedClose": 54.099998474121094
+    },
+    {
+      "date": "2026-10-28",
+      "close": 54.41999816894531,
+      "adjustedClose": 54.41999816894531
+    },
+    {
+      "date": "2026-10-29",
+      "close": 53.540000915527344,
+      "adjustedClose": 53.540000915527344
+    },
+    {
+      "date": "2026-10-30",
+      "close": 51.13999938964844,
+      "adjustedClose": 51.13999938964844
     }
   ]
 }
