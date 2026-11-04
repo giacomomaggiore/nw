@@ -26,8 +26,9 @@ export function CashflowDashboard({
 }) {
   const [displayCurrency, setDisplayCurrency] = useState(currency);
   const report = reports[displayCurrency];
-  // Only complete months are charted and averaged; the current month is still in progress.
+  // Averages and insights use complete months only; the trend chart also plots the month in progress.
   const cutoff = monthStart(reportingDate, -1);
+  const chartCutoff = monthStart(reportingDate);
   const range = useReportRange({
     today: reportingDate,
     firstDate: report.periods[0]?.period ?? reportingDate,
@@ -49,7 +50,7 @@ export function CashflowDashboard({
         report={report}
         rangeStart={range.rangeStart}
         rangeEnd={range.rangeEnd}
-        cutoff={cutoff}
+        cutoff={chartCutoff}
         currency={displayCurrency}
       />
       <CashflowSummary report={report} reportingDate={reportingDate} cutoff={cutoff} currency={displayCurrency} />
