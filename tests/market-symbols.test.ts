@@ -10,6 +10,8 @@ const asset = (name: string, datatype: AssetRow["datatype"], currency: string): 
   account: "-",
   displayName: null,
   fullName: null,
+  ter: null,
+  proxy: [],
   reportingValues: new Map(),
 });
 
@@ -43,5 +45,17 @@ describe("requiredMarketSymbols", () => {
 
   it("is sorted and free of duplicates", () => {
     assert.deepEqual(symbols, [...new Set(symbols)].sort());
+  });
+
+  it("includes proxy tickers and supported-currency FX pairs when a proxy is configured", () => {
+    const withProxy = {
+      ...netWorth,
+      assets: [{ ...netWorth.assets[0], proxy: [{ symbol: "URTH", weight: 2 }] }, ...netWorth.assets.slice(1)],
+    };
+    const proxySymbols = requiredMarketSymbols(withProxy, cashflow);
+    assert.ok(proxySymbols.includes("URTH"));
+    assert.ok(proxySymbols.includes("USDCHF=X"));
+    assert.ok(proxySymbols.includes("EURUSD=X"));
+    assert.ok(proxySymbols.includes("CHFUSD=X"));
   });
 });

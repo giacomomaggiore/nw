@@ -18,7 +18,7 @@ const valid: WorkbookTabs = {
   constants: [["CURRENCY_1", "CHF"], ["FIRE target", 1_500_000]],
   saa: [["ASSET_CLASS", "INSTRUMENT", 46_023, 46_054], ["equities", "VT", 0.9, 0.8]],
   categories: [["CATEGORY", "PARENT_CATEGORY", "IS_ESSENTIAL", "IS_RECURRING"], ["Rent", "Housing", true, true]],
-  metadata: [["TICKER", "DISPLAY_NAME", "FULL_NAME", "CURRENCY", "TER", "ISSUER"], ["VT", "", "Vanguard Total World", "USD", 0.07, "Vanguard"]],
+  metadata: [["TICKER", "DISPLAY_NAME", "FULL_NAME", "CURRENCY", "TER", "ISSUER"], ["VT", "", "Vanguard Total World", "USD", 0.0007, "Vanguard"]],
 };
 
 describe("workbook validation", () => {
@@ -108,13 +108,49 @@ describe("workbook validation", () => {
   it("requires every metadata field except the display name", () => {
     const check = checkMetadataTab([
       valid.metadata[0],
-      ["VT", "", "", "USD", 0.07, "Vanguard"],
-      ["IWDA.AS", "World", "iShares", "euro", 0.2, "iShares"],
+      ["VT", "", "", "USD", 0.0007, "Vanguard"],
+      ["IWDA.AS", "World", "iShares", "euro", 0.002, "iShares"],
     ]);
     assert.deepEqual(check.errors, [
       "metadata row 2: ticker, full name, currency, TER, and issuer are required.",
       "metadata row 3: currency must be a three-letter uppercase code.",
     ]);
     assert.deepEqual(checkMetadataTab(valid.metadata).errors, []);
+  });
+
+  it("flags a TER that looks like a percentage typed as a plain number", () => {
+    const check = checkMetadataTab([
+      valid.metadata[0],
+      ["VT", "", "Vanguard", "USD", 0.06, "Vanguard"],
+      ["IWDA.AS", "", "iShares", "EUR", -0.001, "iShares"],
+      ["BND", "", "Vanguard", "USD", "low", "Vanguard"],
+      ["SPY", "", "SSGA", "USD", 0, "SSGA"],
+    ]);
+    assert.equal(check.errors.length, 3);
+    assert.match(check.errors[0], /^metadata row 2: TER must be a yearly fraction between 0 and 0.05/);
+    assert.match(check.errors[1], /^metadata row 3: TER must be a yearly fraction/);
+    assert.match(check.errors[2], /^metadata row 4: TER must be a yearly fraction/);
+  });
+
+  it("accepts the optional PROXY column and reports a bad formula with its row", () => {
+    const header = [...(valid.metadata[0] as string[]), "PROXY"];
+    assert.deepEqual(
+      checkMetadataTab([header, ["VT", "", "Vanguard", "USD", 0.0007, "Vanguard", ""], ["NTSG.PA", "", "WisdomTree", "USD", 0.0025, "WisdomTree", "URTH*0.9+IEF*0.6"]]).errors,
+      [],
+    );
+    const check = checkMetadataTab([
+      header,
+      ["NTSG.PA", "", "WisdomTree", "USD", 0.0025, "WisdomTree", "URTH*0,9"],
+      ["LWLD.PA", "", "Amundi", "USD", 0.006, "Amundi", "LWLD.PA"],
+    ]);
+    assert.equal(check.errors.length, 2);
+    assert.match(check.errors[0], /^metadata row 2: invalid PROXY\. .*not a valid weight/);
+    assert.equal(check.errors[1], "metadata row 3: a fund cannot be its own proxy.");
+  });
+
+  it("allows a seventh header only when it is PROXY", () => {
+    const base = valid.metadata[0] as string[];
+    assert.deepEqual(checkMetadataTab([[...base, "PROXY", ""], valid.metadata[1]]).errors, []);
+    assert.match(checkMetadataTab([[...base, "NOTES"], valid.metadata[1]]).errors[0], /Invalid metadata headers/);
   });
 });

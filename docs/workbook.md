@@ -51,12 +51,20 @@ One row is one asset or account. After the first four columns, each column is a 
 
 One row for each `quantity` asset.
 
-| TICKER | DISPLAY_NAME | FULL_NAME | CURRENCY | TER | ISSUER |
-| --- | --- | --- | --- | --- | --- |
-| VT | World stocks | Vanguard Total World Stock ETF | USD | 0.06 | Vanguard |
+| TICKER | DISPLAY_NAME | FULL_NAME | CURRENCY | TER | ISSUER | PROXY |
+| --- | --- | --- | --- | --- | --- | --- |
+| VT | World stocks | Vanguard Total World Stock ETF | USD | 0.06% | Vanguard | |
+| NTSG.PA | | WisdomTree Global Efficient Core | USD | 0.25% | WisdomTree | URTH*0.9+IEF*0.6 |
 
 - `TICKER` equals the `ASSET` of the `quantity` row.
-- Every column except `DISPLAY_NAME` is required.
+- Every column except `DISPLAY_NAME` and `PROXY` is required. `PROXY` is an optional seventh column.
+- `CURRENCY` is the fund's own currency. The currency of its price is the `CURRENCY` of its row in `assets`.
+- `TER` is the yearly cost as a fraction: 0.06% is stored as `0.0006`. Format the cell as a percentage and type `0.06%`, or type `0.0006`. A plain `0.06` would mean 6% a year, so `npm run test:sheets` rejects any value above `0.05`.
+- `PROXY` gives a young fund a history for the Monte Carlo page. Leave it blank when the fund has been trading long enough. Otherwise write one or more Yahoo Finance symbols joined by `+`, each with an optional weight after `*` (a missing weight is 1):
+  - `URTH*2` is twice the return of `URTH`, for a 2x leveraged fund;
+  - `URTH*0.9+IEF*0.6` is 90% equities plus 60% bonds, for a fund that holds both;
+  - `AQMIX` is the symbol alone.
+- Write the weights with a dot as the decimal separator, no `=` at the start, and at most 10 per symbol. A symbol appears once, and a fund is never its own proxy. Weights above 1 in total are financed at the cash rate, and the rest of a total below 1 stays in cash. See [Monte Carlo](montecarlo.md) for how the history is rebuilt.
 - The net-worth table shows `DISPLAY_NAME`, or `FULL_NAME` if it is blank.
 - You need at least one row.
 

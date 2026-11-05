@@ -1,4 +1,4 @@
-import type { AssetDatatype, AssetRow, NetWorthWorkbook } from "@/types/workbook";
+import type { AssetDatatype, AssetRow, NetWorthWorkbook, ProxyTerm } from "@/types/workbook";
 import { readSheetValues, type SheetRows } from "./client";
 import {
   cellText,
@@ -10,9 +10,12 @@ import {
   parseConstants,
   parseSheetDate,
 } from "./parse";
+import { parseProxy } from "./proxy";
 
 export const ASSET_HEADERS = ["asset", "datatype", "currency", "account"];
 export const METADATA_HEADERS = ["ticker", "display_name", "full_name", "currency", "ter", "issuer"];
+/** Optional seventh `metadata` header: the history proxy of a young fund. */
+export const METADATA_PROXY_HEADER = "proxy";
 export const DATATYPES = ["quantity", "cash", "value"];
 const SUPPORTED_CURRENCIES = ["EUR", "CHF", "USD"];
 
@@ -22,15 +25,41 @@ type NetWorthTabs = {
   constantRows: SheetRows;
 };
 
-/** Instrument names keyed by ticker. */
+/** Normalised `metadata` headers without trailing blank cells, and the headers the tab must have. */
+export function metadataHeaderCheck(headerRow: unknown[]) {
+  const actual = normalizeHeaders(headerRow);
+  while (actual.length > 0 && actual[actual.length - 1] === "") actual.pop();
+  const expected = actual.length > METADATA_HEADERS.length ? [...METADATA_HEADERS, METADATA_PROXY_HEADER] : METADATA_HEADERS;
+  return { actual, expected };
+}
+
+/** TER is a yearly fraction (0.0006 = 0.06%); a blank or non-numeric cell is null. */
+function parseTer(value: unknown) {
+  const text = cellText(value);
+  const ter = Number(text);
+  return text !== "" && Number.isFinite(ter) ? ter : null;
+}
+
+/** Instrument names, TER and history proxy keyed by ticker. */
 function parseMetadata(rows: SheetRows) {
   return new Map(
     rows
       .filter((row) => !isBlankRow(row))
-      .map(([ticker, displayName, fullName]) => [
-        cellText(ticker),
-        { displayName: cellText(displayName) || null, fullName: cellText(fullName) || null },
-      ]),
+      .map((row) => {
+        const [rawTicker, displayName, fullName, rawFundCurrency, ter, , proxy] = row;
+        const ticker = cellText(rawTicker);
+        const fundCurrency = normalizeCurrency(rawFundCurrency);
+        let terms: ProxyTerm[];
+        try {
+          terms = parseProxy(proxy);
+        } catch (error) {
+          throw new Error(`The metadata tab has an invalid PROXY for ${ticker || "an unnamed ticker"}: ${error instanceof Error ? error.message : error}`);
+        }
+        if (terms.some((term) => term.symbol === ticker)) {
+          throw new Error(`The metadata tab has an invalid PROXY for ${ticker}: a fund cannot be its own proxy.`);
+        }
+        return [ticker, { displayName: cellText(displayName) || null, fullName: cellText(fullName) || null, fundCurrency: isCurrencyCode(fundCurrency) ? fundCurrency : null, ter: parseTer(ter), proxy: terms }];
+      }),
   );
 }
 
@@ -64,6 +93,9 @@ function parseAsset(
     account,
     displayName: instrument?.displayName ?? null,
     fullName: instrument?.fullName ?? null,
+    fundCurrency: instrument?.fundCurrency ?? null,
+    ter: instrument?.ter ?? null,
+    proxy: instrument?.proxy ?? [],
     reportingValues,
   };
 }
@@ -94,7 +126,8 @@ export function parseNetWorthWorkbook({ assetRows, metadataRows, constantRows }:
   if (!hasHeaders(normalizeHeaders(headers.slice(0, 4)), ASSET_HEADERS)) {
     throw new Error("The assets tab has invalid headers.");
   }
-  if (!hasHeaders(normalizeHeaders(metadataHeaders), METADATA_HEADERS)) {
+  const metadataCheck = metadataHeaderCheck(metadataHeaders);
+  if (!hasHeaders(metadataCheck.actual, metadataCheck.expected)) {
     throw new Error("The metadata tab has invalid headers.");
   }
 
@@ -105,6 +138,6 @@ export function parseNetWorthWorkbook({ assetRows, metadataRows, constantRows }:
 }
 
 export async function loadNetWorthWorkbook(): Promise<NetWorthWorkbook> {
-  const [assetRows, metadataRows, constantRows] = await readSheetValues("assets!A:Z", "metadata!A:F", "constants!A:B");
+  const [assetRows, metadataRows, constantRows] = await readSheetValues("assets!A:Z", "metadata!A:G", "constants!A:B");
   return parseNetWorthWorkbook({ assetRows, metadataRows, constantRows });
 }

@@ -130,13 +130,15 @@ Keep the JSON file outside the repository. Never commit it or paste it anywhere.
 
 ### Step 6. Download market data
 
-`npm run download:market-data` downloads daily prices and exchange rates from Yahoo Finance and saves them in `data/market-data`. It downloads:
+`npm run download:market-data` downloads maximum-history daily prices, exchange rates and proxy symbols from Yahoo Finance, plus the FRED rate and CPI series used by Monte Carlo. It saves compact one-row-per-line Yahoo files in `data/market-data` and macro files in `data/market-data/macro`. It downloads:
 
 - Every `ASSET` in `assets` with the datatype `quantity`. The `ASSET` value must be a Yahoo Finance symbol, for example `VT` or `IWDA.AS`.
 - `ACWI` and `BND`, for the benchmark.
 - An exchange-rate pair (for example `EURCHF=X`) from every currency in your workbook to every report currency.
+- Every configured `metadata.PROXY` symbol, with the supported-currency FX pairs needed to combine proxy returns.
+- The FRED rate and CPI pair for each supported reporting currency.
 
-The history starts at the earliest date in your workbook. The script waits half a second between symbols, so it can take a minute or two. If Yahoo refuses a request, run it again.
+The history starts at the earliest date available from the provider. The script waits half a second between requests, so it can take several minutes. If Yahoo or FRED refuses a request, run it again.
 
 ### Step 7. Run the app
 

@@ -57,9 +57,9 @@ Headers: `CATEGORY`, `PARENT_CATEGORY`, `IS_ESSENTIAL`, `IS_RECURRING`. `IS_ESSE
 
 ### `metadata`
 
-Headers: `TICKER`, `DISPLAY_NAME`, `FULL_NAME`, `CURRENCY`, `TER`, `ISSUER`.
+Headers: `TICKER`, `DISPLAY_NAME`, `FULL_NAME`, `CURRENCY`, `TER`, `ISSUER`, and an optional seventh `PROXY`.
 
-`TICKER` identifies the corresponding `assets.ASSET` ticker. Every field except `DISPLAY_NAME` is required. Net-worth displays `DISPLAY_NAME` when supplied, otherwise `FULL_NAME`; it uses Yahoo Finance metadata only as a final fallback. Ticker symbols remain in a dedicated table column.
+`TICKER` identifies the corresponding `assets.ASSET` ticker. Every field except `DISPLAY_NAME` and `PROXY` is required. `CURRENCY` is the fund's own currency; prices are converted from the currency of the `assets` row. `TER` is a yearly fraction (0.06% is `0.0006`, usually a percentage-formatted cell) and `npm run test:sheets` rejects values above 0.05. `PROXY` backfills the history of a young fund for the Monte Carlo page: a Yahoo symbol or a weighted sum, `SYMBOL` or `SYMBOL*weight` joined by `+`, with a dot as the decimal separator (for example `URTH*2` or `URTH*0.9+IEF*0.6`); blank means none (see `docs/montecarlo.md`). Net-worth displays `DISPLAY_NAME` when supplied, otherwise `FULL_NAME`; it uses Yahoo Finance metadata only as a final fallback. Ticker symbols remain in a dedicated table column.
 
 ### `saa`
 

@@ -2,8 +2,9 @@
 // with row numbers, instead of stopping at the first one like the app's parsers do.
 import type { SheetRows } from "./client";
 import { CASHFLOW_HEADERS, CASHFLOW_TYPES, CATEGORY_HEADERS } from "./cashflow";
-import { ASSET_HEADERS, DATATYPES, METADATA_HEADERS } from "./net-worth";
+import { ASSET_HEADERS, DATATYPES, metadataHeaderCheck } from "./net-worth";
 import { cellText, hasHeaders, isBlankRow, isCurrencyCode, normalizeHeaders } from "./parse";
+import { parseProxy } from "./proxy";
 
 export type TabCheck = { tab: string; summary: string; errors: string[] };
 
@@ -17,6 +18,8 @@ export type WorkbookTabs = {
 };
 
 const SAA_HEADERS = ["asset_class", "instrument"];
+/** Upper bound of a plausible yearly TER as a fraction (5%). */
+const MAX_TER = 0.05;
 
 function headerError(tab: string, actual: string[], expected: string[]) {
   return hasHeaders(actual, expected) ? [] : [`Invalid ${tab} headers. Expected: ${expected.join(", ")}. Found: ${actual.join(", ")}`];
@@ -151,14 +154,25 @@ export function checkMetadataTab(rows: SheetRows): TabCheck {
   if (rows.length < 2) return { tab, summary, errors: ["The metadata tab must contain a header row and at least one instrument row."] };
 
   const [headers, ...instruments] = rows;
-  const errors = headerError(tab, normalizeHeaders(headers), METADATA_HEADERS);
+  const { actual, expected } = metadataHeaderCheck(headers);
+  const errors = headerError(tab, actual, expected);
   for (const [index, instrument] of instruments.entries()) {
-    // DISPLAY_NAME is optional; every other field is required.
-    const [ticker, , fullName, currency, ter, issuer] = instrument.map(cellText);
+    // DISPLAY_NAME and PROXY are optional; every other field is required.
+    const [ticker, , fullName, currency, ter, issuer, proxy] = instrument.map(cellText);
+    const row = `metadata row ${index + 2}`;
     if (!ticker || !fullName || !currency || !ter || !issuer) {
-      errors.push(`metadata row ${index + 2}: ticker, full name, currency, TER, and issuer are required.`);
+      errors.push(`${row}: ticker, full name, currency, TER, and issuer are required.`);
     }
-    if (currency && !isCurrencyCode(currency)) errors.push(`metadata row ${index + 2}: currency must be a three-letter uppercase code.`);
+    if (currency && !isCurrencyCode(currency)) errors.push(`${row}: currency must be a three-letter uppercase code.`);
+    // A TER typed as a percentage (0.06 for 0.06%) would be read as 6% a year.
+    if (ter && !(Number(ter) >= 0 && Number(ter) <= MAX_TER)) {
+      errors.push(`${row}: TER must be a yearly fraction between 0 and ${MAX_TER} (store 0.06% as 0.0006, or format the cell as a percentage).`);
+    }
+    try {
+      if (parseProxy(proxy).some((term) => term.symbol === ticker)) errors.push(`${row}: a fund cannot be its own proxy.`);
+    } catch (error) {
+      errors.push(`${row}: invalid PROXY. ${error instanceof Error ? error.message : error}`);
+    }
   }
   return { tab, summary, errors };
 }

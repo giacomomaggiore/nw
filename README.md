@@ -27,7 +27,7 @@ Note that you are the only one seeing real amounts. Everyone else who opens the 
 
 ---
 
-The app is built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, Recharts, `googleapis` (Google Sheets), Auth.js (`next-auth` 5, beta). Prices and exchange rates come from Yahoo Finance.
+The app is built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, Recharts, `googleapis` (Google Sheets), Auth.js (`next-auth` 5, beta). Prices and exchange rates come from Yahoo Finance; the downloader also stores maximum-history proxy data and FRED macro series for Monte Carlo.
 
 ## Project philosophy
 
@@ -89,7 +89,7 @@ Every tab needs its header row and at least one data row (the `constants` tab ha
 | `cashflow` | one row per transaction | `DATE`, `TYPE`, `NAME`, `AMOUNT`, `CURRENCY`, `CATEGORY`, `SUBCATEGORY`, `NOTES` |
 | `assets` | one row per asset, one column per period | `ASSET`, `DATATYPE`, `CURRENCY`, `ACCOUNT`, then one date per period |
 | `categories` | expense, income categories | `CATEGORY`, `PARENT_CATEGORY`, `IS_ESSENTIAL`, `IS_RECURRING` |
-| `metadata` | name, fees of the tickers in `assets` | `TICKER`, `DISPLAY_NAME`, `FULL_NAME`, `CURRENCY`, `TER`, `ISSUER` |
+| `metadata` | name, fees of the tickers in `assets`, optional history proxy | `TICKER`, `DISPLAY_NAME`, `FULL_NAME`, `CURRENCY`, `TER`, `ISSUER`, optional `PROXY` |
 | `saa` | target allocation by period _(not implemented yet)_ | `ASSET_CLASS`, `INSTRUMENT`, then one date per period |
 | `constants` | settings: key in column A, value in column B | _no header row_ |
 
@@ -139,7 +139,7 @@ This checks all six tabs and lists every problem with its row number. See [Appen
 npm run download:market-data
 ```
 
-This downloads daily prices and exchange rates from Yahoo Finance and saves them in `data/market-data`. What exactly is downloaded is in [Appendix E](docs/appendix.md#step-6-download-market-data).
+This downloads maximum-history daily prices, exchange rates and proxy symbols from Yahoo Finance, plus the FRED rate and CPI series, and saves them in `data/market-data`. What exactly is downloaded is in [Appendix E](docs/appendix.md#step-6-download-market-data).
 
 _Note that the file names are your tickers, so if you publish your own copy of this repository, anyone can see which instruments you track._
 

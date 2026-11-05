@@ -30,6 +30,8 @@ const asset = (name: string, datatype: AssetRow["datatype"], currency: string, v
   account: "-",
   displayName: null,
   fullName: null,
+  ter: null,
+  proxy: [],
   reportingValues: new Map(values),
 });
 const netWorthWorkbook = (currencies: string[]): NetWorthWorkbook => ({

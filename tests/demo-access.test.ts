@@ -34,7 +34,7 @@ describe("demoMultiplier", () => {
 const netWorth: NetWorthWorkbook = {
   reportingPeriods: ["2026-01-01"],
   currencies: ["CHF"],
-  assets: [{ asset: "VT", datatype: "quantity", currency: "USD", account: "IB", displayName: null, fullName: null, reportingValues: new Map([["2026-01-01", 10]]) }],
+  assets: [{ asset: "VT", datatype: "quantity", currency: "USD", account: "IB", displayName: null, fullName: null, ter: null, proxy: [], reportingValues: new Map([["2026-01-01", 10]]) }],
 };
 const cashflow: CashflowWorkbook = {
   categories: [],
@@ -94,7 +94,7 @@ describe("loadNetWorthPage with a multiplier", () => {
   it("scales the portfolio totals and leaves the percentage changes alone", async () => {
     const day = (offset: number) => addDays(today(), offset);
     const asset = (values: Array<[string, number]>): NetWorthWorkbook["assets"][number] => ({
-      asset: "Savings", datatype: "cash", currency: "CHF", account: "-", displayName: null, fullName: null, reportingValues: new Map(values),
+      asset: "Savings", datatype: "cash", currency: "CHF", account: "-", displayName: null, fullName: null, ter: null, proxy: [], reportingValues: new Map(values),
     });
     const workbook: NetWorthWorkbook = { reportingPeriods: [day(-60), day(-30)], currencies: ["CHF"], assets: [asset([[day(-60), 1_000], [day(-30), 1_100]])] };
     const sources = { netWorth: async () => workbook, cashflow: async () => cashflow };

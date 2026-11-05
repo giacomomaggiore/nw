@@ -10,7 +10,7 @@ const PERIODS = ["2026-01-31", "2026-02-28"];
 const CURRENT = "2026-03-15";
 
 function asset(overrides: Partial<AssetRow> & Pick<AssetRow, "asset" | "datatype" | "currency">, values: Array<[string, number]>): AssetRow {
-  return { account: "-", displayName: null, fullName: null, reportingValues: new Map(values), ...overrides };
+  return { account: "-", displayName: null, fullName: null, ter: null, proxy: [], reportingValues: new Map(values), ...overrides };
 }
 
 const workbook: NetWorthWorkbook = {

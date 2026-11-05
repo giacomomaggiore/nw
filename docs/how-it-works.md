@@ -90,7 +90,7 @@ Replacing Yahoo means changing `scripts/download-market-data.ts` and `lib/market
 
 ### Reading and parsing the workbook
 
-- Ranges read: `cashflow!A:H`, `categories!A:D`, `constants!A:B`, `assets!A:Z` (at most 22 reporting-period columns), `metadata!A:F`. The root layout reads `constants!A:B` on its own for the site metadata.
+- Ranges read: `cashflow!A:H`, `categories!A:D`, `constants!A:B`, `assets!A:Z` (at most 22 reporting-period columns), `metadata!A:G`. The root layout reads `constants!A:B` on its own for the site metadata.
 - Dates arrive as Google Sheets serial numbers and become ISO `YYYY-MM-DD` strings. Every date in the app is a UTC calendar day, never local time.
 - Headers are matched case-insensitively. The seventh `cashflow` header may be `CITY`, a legacy alias for `SUBCATEGORY`. `DOL` is accepted as a legacy alias for `USD`.
 - `constants` keys are upper-cased. Only `CURRENCY_*` values are normalized as currency codes (upper-case, `DOL` → `USD`); every other value is kept as typed.
@@ -280,7 +280,7 @@ npm run test:sheets # live workbook contract check
 
 - `cashflow`: required columns; required values; allowed types; non-negative amounts; three-letter currency codes; known categories.
 - `assets`: required columns; ascending Google Sheets dates; allowed datatypes; numeric values.
-- `metadata`: required columns; every field except `DISPLAY_NAME` is required.
+- `metadata`: required columns, optionally followed by `PROXY`; every field except `DISPLAY_NAME` and `PROXY` is required; `TER` is a yearly fraction between 0 and 0.05; `PROXY` has the `SYMBOL*weight+...` syntax and is never the fund itself.
 - `categories`: required columns and values; boolean `TRUE`/blank flags; no duplicates.
 - `saa`: required columns; ascending dates; non-negative targets.
 - `constants`: no header row; a non-empty key and value on every row. It does not yet validate `ALLOWED_EMAILS` or `LUCKY_SEED`.

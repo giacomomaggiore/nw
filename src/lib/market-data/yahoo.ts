@@ -16,10 +16,10 @@ function unixSeconds(date: string) {
   return Math.floor(new Date(`${date}T00:00:00Z`).getTime() / 1000);
 }
 
-/** Daily prices for `[start, end)` from the Yahoo Finance chart endpoint. Throws when nothing is returned. */
-export async function downloadYahooPrices(symbol: string, start: string, end: string): Promise<MarketPrice[]> {
+/** Daily prices for `[start, end)` from Yahoo; a null start requests the maximum available history. */
+export async function downloadYahooPrices(symbol: string, start: string | null, end: string): Promise<MarketPrice[]> {
   const url = new URL(`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}`);
-  url.searchParams.set("period1", String(unixSeconds(start)));
+  url.searchParams.set("period1", start === null ? "0" : String(unixSeconds(start)));
   url.searchParams.set("period2", String(unixSeconds(end)));
   url.searchParams.set("interval", "1d");
   url.searchParams.set("events", "history");

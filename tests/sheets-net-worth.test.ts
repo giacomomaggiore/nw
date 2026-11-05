@@ -16,7 +16,7 @@ function tabs(overrides: Partial<Parameters<typeof parseNetWorthWorkbook>[0]> = 
       [],
       ["House", "value", "DOL", "-", "", 250_000],
     ],
-    metadataRows: [METADATA_HEADER, ["VT", "", "Vanguard Total World", "USD", 0.07, "Vanguard"], ["IWDA.AS", "World", "iShares MSCI World", "EUR", 0.2, "iShares"]],
+    metadataRows: [METADATA_HEADER, ["VT", "", "Vanguard Total World", "USD", 0.0007, "Vanguard"], ["IWDA.AS", "World", "iShares MSCI World", "EUR", 0.002, "iShares"]],
     constantRows: [["CURRENCY_1", "CHF"]],
     ...overrides,
   };
@@ -44,6 +44,45 @@ describe("parseNetWorthWorkbook", () => {
     assert.deepEqual([savings.displayName, savings.fullName], [null, null]);
     const named = parseNetWorthWorkbook(tabs({ assetRows: [ASSET_HEADER, ["IWDA.AS", "quantity", "EUR", "IB", 1, 1]] })).assets[0];
     assert.deepEqual([named.displayName, named.fullName], ["World", "iShares MSCI World"]);
+  });
+
+  it("attaches the TER as a yearly fraction and the history proxy of each fund", () => {
+    const header = [...METADATA_HEADER, "PROXY"];
+    const workbook = parseNetWorthWorkbook(
+      tabs({
+        assetRows: [ASSET_HEADER, ["VT", "quantity", "USD", "IB", 1, 1], ["NTSG.PA", "quantity", "EUR", "IB", 1, 1], ["Savings", "cash", "EUR", "Bank", 1, 1]],
+        metadataRows: [
+          header,
+          ["VT", "", "Vanguard Total World", "USD", 0.0006, "Vanguard", ""],
+          ["NTSG.PA", "", "WisdomTree", "USD", 0.0025, "WisdomTree", "URTH*0.9+IEF*0.6"],
+          ["Blank", "", "No TER", "USD", "", "X"],
+        ],
+      }),
+    );
+    const [vt, ntsg, savings] = workbook.assets;
+    assert.deepEqual([vt.ter, vt.proxy], [0.0006, []]);
+    assert.deepEqual([ntsg.ter, ntsg.proxy], [0.0025, [{ symbol: "URTH", weight: 0.9 }, { symbol: "IEF", weight: 0.6 }]]);
+    assert.deepEqual([savings.ter, savings.proxy], [null, []]);
+    // Without a PROXY column every fund simply has no proxy.
+    assert.deepEqual(parseNetWorthWorkbook(tabs()).assets[0].proxy, []);
+  });
+
+  it("treats a blank or non-numeric TER as unknown", () => {
+    const workbook = parseNetWorthWorkbook(tabs({ metadataRows: [METADATA_HEADER, ["VT", "", "Vanguard", "USD", "n/a", "Vanguard"]] }));
+    assert.equal(workbook.assets[0].ter, null);
+  });
+
+  it("rejects an invalid PROXY naming the ticker", () => {
+    const withProxy = (proxy: string) => tabs({ metadataRows: [[...METADATA_HEADER, "PROXY"], ["VT", "", "Vanguard", "USD", 0.0006, "Vanguard", proxy]] });
+    assert.throws(() => parseNetWorthWorkbook(withProxy("URTH*0,9")), /invalid PROXY for VT: .*not a valid weight/);
+    assert.throws(() => parseNetWorthWorkbook(withProxy("VT")), /invalid PROXY for VT: a fund cannot be its own proxy/);
+  });
+
+  it("accepts a trailing blank metadata header but rejects another seventh header", () => {
+    const rows = (header: unknown[]) => tabs({ metadataRows: [header, ["VT", "", "Vanguard", "USD", 0.0006, "Vanguard"]] });
+    assert.doesNotThrow(() => parseNetWorthWorkbook(rows([...METADATA_HEADER, ""])));
+    assert.doesNotThrow(() => parseNetWorthWorkbook(rows([...METADATA_HEADER, "proxy"])));
+    assert.throws(() => parseNetWorthWorkbook(rows([...METADATA_HEADER, "NOTES"])), /metadata tab has invalid headers/);
   });
 
   it("puts CURRENCY_1 first, then CURRENCY_2 and CURRENCY_3, then fills from EUR, CHF, USD", () => {

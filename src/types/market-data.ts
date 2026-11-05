@@ -5,3 +5,8 @@ export type MarketPrice = {
   /** Dividend-adjusted close; null when the provider did not supply one. */
   adjustedClose: number | null;
 };
+
+export type MacroObservation = {
+  date: string;
+  value: number;
+};

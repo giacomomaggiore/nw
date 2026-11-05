@@ -20,7 +20,7 @@ async function main() {
     "constants!A:B",
     "saa!A:Z",
     "categories!A:D",
-    "metadata!A:F",
+    "metadata!A:G",
   );
   const checks: TabCheck[] = checkWorkbook({ cashflow, assets, constants, saa, categories, metadata });
 

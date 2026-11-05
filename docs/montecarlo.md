@@ -1,6 +1,20 @@
 # Monte Carlo
 
-Status: **design complete, nothing implemented.** Route: `/montecarlo` (currently a "Coming soon" placeholder). This file holds the decisions of the brainstorm; there are no open questions. Once built, the implemented parts move to `CLAUDE.md` (short summary) and `docs/how-it-works.md` (details). The theory and methodology page for readers is written separately by the owner and linked from the page.
+Status: **the first end-to-end Monte Carlo slice is implemented**: local Yahoo/FRED downloads, proxy backfill, monthly dataset construction, the server loader, browser worker, and a portfolio-only dashboard are available at `/montecarlo`. Cash flows, rebalancing, costs, tax, advanced overrides and risk metrics remain later phases. This file holds the decisions of the brainstorm; there are no open questions.
+
+Implemented so far, all pure and deterministic:
+
+| Module | Content |
+| --- | --- |
+| `random.ts`, `distributions.ts` | xoshiro128** with seed expansion and unbiased `nextInt`; Box-Muller normal, Marsaglia-Tsang gamma, chi-square. |
+| `statistics.ts`, `quantiles.ts`, `matrix.ts` | mean, covariance, pooled kurtosis and $\nu$ estimate; linear-interpolation quantiles; Jacobi eigendecomposition, Higham repair, Cholesky. |
+| `dataset.ts`, `types.ts` | the `MonthlyDataset` contract and its validation (at least 60 months, finite, returns above −100%). |
+| `bootstrap-engine.ts`, `student-t-engine.ts`, `scenarios.ts` | the two engines and `generateScenarios` (stored `Float32Array`, caps, `maxPaths` hint, model details). |
+| `lib/sheets/proxy.ts`, `net-worth.ts`, `validate.ts` | the optional `metadata.PROXY` column: `parseProxy`, `ter` and `proxy` on every `AssetRow`, header and range (`metadata!A:G`) handling, and the `test:sheets` checks (TER unit, proxy syntax). |
+| `accounting.ts`, `summary.ts` | `account` (drifting holdings, cash at the risk-free rate, constant value, live overrides) and `summarize` (bands, horizon table, histograms, sample paths; nominal and real). |
+| `market-data/macro.ts`, `market-data/montecarlo.ts`, `app/montecarlo` | Local FRED reader, adjusted-price/proxy monthly history, loader, worker and dashboard. |
+
+Not yet built: cash flows, cash buffer, rebalancing, costs and tax (phase 2), and the risk metrics of phase 3 (ruin, drawdown, VaR/CVaR). The theory and methodology page for readers is written separately by the owner and linked from the page.
 
 ## Purpose
 
@@ -44,11 +58,11 @@ The file format stays: daily rows with `close` and `adjustedClose`. With the max
 
 ### Proxy backfill
 
-Young or exotic funds (leveraged, overlay, managed-futures, tail-hedge) have too little history for a bootstrap or a covariance estimate. Each ticker may declare a **proxy** through one new optional `metadata` column, `PROXY`, placed after `ISSUER` (column G). Its value is a formula of one or more terms joined by `+`; a term is a Yahoo symbol with an optional weight, `SYMBOL` or `SYMBOL*weight` (a positive decimal with a dot, default 1). Blank means no proxy. Examples: `URTH*2` (twice world equity), `URTH*0.9+IEF*0.6` (90% equity plus 60% bonds). This is a workbook-contract change: when implemented, widen the `metadata` read range from `A:F` to `A:G` and update `CLAUDE.md`, `docs/workbook.md`, the parser and `test:sheets`. Rules:
+Young or exotic funds (leveraged, overlay, managed-futures, tail-hedge) have too little history for a bootstrap or a covariance estimate. Each ticker may declare a **proxy** through one new optional `metadata` column, `PROXY`, placed after `ISSUER` (column G). Its value is a formula of one or more terms joined by `+`; a term is a Yahoo symbol with an optional weight, `SYMBOL` or `SYMBOL*weight` (a positive decimal with a dot, default 1). Blank means no proxy. Examples: `URTH*2` (twice world equity), `URTH*0.9+IEF*0.6` (90% equity plus 60% bonds). The contract is implemented and documented in `CLAUDE.md` and `docs/workbook.md`; parsed values reach the code as `AssetRow.proxy` (`ProxyTerm[]`) and `AssetRow.ter` (a yearly fraction, `0.0006` for 0.06%). Rules:
 
 - The synthetic series is built at **daily** frequency with constant daily weights, so the daily-reset drag of leveraged products is captured, then spliced onto the ticker's own history at the first date the ticker trades. Real history always wins.
 - Synthetic daily return: $\sum_i w_i\, r_i + \bigl(1 - \sum_i w_i\bigr)\, rf_{daily} - TER_{daily}$. Weights above 1 in total are financed at the risk-free rate; weights below 1 leave the rest in cash. The ticker's own history is already net of TER (adjusted closes are total return), so the ticker's `TER` is subtracted only on the synthetic segment, never twice.
-- **Currency:** all terms are converted into the currency of the **first term**, combined there, and the combined series is converted **once** into the ticker's listing currency. The fund's FX exposure therefore counts once, not once per unit of leverage: choose terms in the currency of the fund's base (for example USD terms for a USD-based fund listed in EUR). The downloader fetches the FX pairs this needs.
+- **Currency:** all terms are converted into the currency of the **first term**, combined there, and the combined series is converted **once** into the ticker's listing currency (the `CURRENCY` of its `assets` row; `metadata.CURRENCY` is the fund's own currency, which can differ, for example a USD fund listed in EUR). The fund's FX exposure therefore counts once, not once per unit of leverage: choose terms in the currency of the fund's base (for example USD terms for a USD-based fund listed in EUR). The downloader fetches the FX pairs this needs.
 - After the splice, the series is converted to `CURRENCY_1` like any other. A EUR-listed fund held in CHF therefore carries EURCHF risk, as the real holding does.
 - After backfill every ticker needs at least 60 monthly observations (the page warns below 120). A ticker with fewer, and no proxy, blocks the run with a data-quality message naming it. Overriding its return and volatility does not help: correlations still come from history.
 - The common window starts at the youngest series after backfill. The owner accepted that `TAIL` (first trade 2017-04, no usable proxy) sets it, so a proxy only has to reach back before April 2017.
@@ -189,7 +203,7 @@ One capital-gains rate. Average cost basis per ticker; a sale disposes basis in 
 Every metric is a distribution across paths. Quantiles use linear interpolation (Excel `PERCENTILE.INC`, NumPy default). The accounting returns every output twice, nominal and real, so the display toggle is instant.
 
 - **Fan chart:** percentile bands of wealth over time (p10–p90, p25–p75 and the median). Bands are cross-sectional per month, so they do not describe any single path. A dashed **paid-in** line (starting wealth plus net contributions) is on by default; about 10 sample paths can be overlaid (off by default).
-- **Horizon table:** percentiles of wealth at 1, 3, 5, 10, 20, 30 and 40 years (those within the horizon), plus the **loss probability** and **ruin probability** at each of those horizons.
+- **Horizon table:** percentiles of wealth at 1, 3, 5, 10, 20, 30 and 40 years (those within the horizon) and the full horizon, plus the **loss probability** and **ruin probability** at each of those horizons. Ruin needs withdrawals to be possible, so it arrives with the cash flows of phase 2.
 - **Terminal-value distribution:** histogram at a horizon chosen from the same fixed set (default: the full horizon), as market value or **after liquidation tax** (everything sold at that horizon). Marks at p10, p50, p90 and the starting wealth.
 - **Risk metrics table:** median terminal wealth and p10–p90; loss probability (terminal wealth below starting wealth plus net contributions); ruin probability (total wealth reaches zero); median max drawdown (worst peak-to-trough fall of the contribution-neutral index per path); VaR and CVaR of terminal wealth change at 95% and 99%.
 - Nominal by default; a toggle shows real values (nominal / path price level).
