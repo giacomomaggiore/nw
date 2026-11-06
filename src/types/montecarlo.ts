@@ -7,9 +7,25 @@ export type MonteCarloSimulationData = {
   currency: string;
   dataset: MonthlyDataset;
   portfolio: Portfolio;
-  instruments: Array<{ ticker: string; name: string; value: number; proxy: boolean }>;
+  instruments: Array<{ ticker: string; name: string; value: number; expectedReturn: number; volatility: number; proxy: boolean }>;
   historyStart: string;
   historyEnd: string;
+};
+
+export type MonteCarloAssetInput = {
+  ticker: string;
+  name: string;
+  value: number;
+  expectedReturn: number;
+  volatility: number;
+  weight: number;
+  proxy: boolean;
+};
+
+export type MonteCarloCashflow = {
+  year: number;
+  income: number;
+  spending: number;
 };
 
 export type MonteCarloControls = {
@@ -18,6 +34,11 @@ export type MonteCarloControls = {
   engine: "bootstrap" | "student-t";
   blockLength: number;
   seed: number;
+  contributionFrequency?: "weekly" | "monthly" | "quarterly" | "annually";
+  rebalancing?: "none" | "time" | "bands";
+  rebalancingEvery?: number;
+  rebalancingBand?: number;
+  taxRate?: number;
 };
 
 export type MonteCarloFanPoint = {

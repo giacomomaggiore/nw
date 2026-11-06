@@ -12,6 +12,8 @@ export type MonteCarloInstrument = {
   ticker: string;
   name: string;
   value: number;
+  expectedReturn: number;
+  volatility: number;
   proxy: boolean;
 };
 
@@ -58,6 +60,8 @@ export async function loadMonteCarloPage(
           ticker: asset.asset,
           name: asset.instrumentName ?? asset.asset,
           value,
+          expectedReturn: 0,
+          volatility: 0,
           proxy: source.proxy.length > 0,
         });
       } else if (asset.datatype === "cash") {
@@ -70,6 +74,16 @@ export async function loadMonteCarloPage(
     const assets = instruments.map(({ ticker }) => workbook.assets.find((asset) => asset.asset === ticker)!);
     const dataset = await loadMonthlyDataset(market, assets, currency);
     validateDataset(dataset);
+    for (const instrument of instruments) {
+      const tickerIndex = dataset.tickers.indexOf(instrument.ticker);
+      const returns = tickerIndex < 0 ? [] : dataset.assetReturns[tickerIndex];
+      if (returns.length > 0) {
+        const mean = returns.reduce((sum, current) => sum + current, 0) / returns.length;
+        const variance = returns.reduce((sum, current) => sum + (current - mean) ** 2, 0) / Math.max(1, returns.length - 1);
+        instrument.expectedReturn = (1 + mean) ** 12 - 1;
+        instrument.volatility = Math.sqrt(variance * 12);
+      }
+    }
     const historyStart = dataset.dates[0];
     const historyEnd = dataset.dates.at(-1)!;
     const portfolio: Portfolio = {

@@ -1,6 +1,6 @@
 # Monte Carlo
 
-Status: **the first end-to-end Monte Carlo slice is implemented**: local Yahoo/FRED downloads, proxy backfill, monthly dataset construction, the server loader, browser worker, and a portfolio-only dashboard are available at `/montecarlo`. Cash flows, rebalancing, costs, tax, advanced overrides and risk metrics remain later phases. This file holds the decisions of the brainstorm; there are no open questions.
+Status: **the first configurable Monte Carlo dashboard is implemented**: local Yahoo/FRED downloads, proxy backfill, monthly dataset construction, the server loader, browser worker, editable current-portfolio assumptions, annual cashflows, contribution frequency, rebalancing controls, and a tax-rate input are available at `/montecarlo`. Additional cost and risk metrics remain later phases. This file holds the decisions of the brainstorm; there are no open questions.
 
 Implemented so far, all pure and deterministic:
 
@@ -14,7 +14,7 @@ Implemented so far, all pure and deterministic:
 | `accounting.ts`, `summary.ts` | `account` (drifting holdings, cash at the risk-free rate, constant value, live overrides) and `summarize` (bands, horizon table, histograms, sample paths; nominal and real). |
 | `market-data/macro.ts`, `market-data/montecarlo.ts`, `app/montecarlo` | Local FRED reader, adjusted-price/proxy monthly history, loader, worker and dashboard. |
 
-Not yet built: cash flows, cash buffer, rebalancing, costs and tax (phase 2), and the risk metrics of phase 3 (ruin, drawdown, VaR/CVaR). The theory and methodology page for readers is written separately by the owner and linked from the page.
+Not yet built: cash buffer, transaction costs, average-basis tax accounting, and the risk metrics of phase 3 (ruin, drawdown, VaR/CVaR). The theory and methodology page for readers is written separately by the owner and linked from the page.
 
 ## Purpose
 

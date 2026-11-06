@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Area, Bar, BarChart, CartesianGrid, ComposedChart, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { boxedTooltipStyle, chartMargin, gridProps, lineCursor, xAxisProps, yAxisProps } from "@/components/charts/chart-style";
 import type { Overrides } from "@/lib/analytics/montecarlo/accounting";
 import type { Summary } from "@/lib/analytics/montecarlo/summary";
 import type { WorkerResponse } from "@/lib/analytics/montecarlo/worker-protocol";
 import { formatAxisValue, formatInteger, formatMoney, formatPercent } from "@/lib/format";
-import type { MonteCarloControls, MonteCarloReport, MonteCarloSimulationData } from "@/types/montecarlo";
+import type { MonteCarloAssetInput, MonteCarloCashflow, MonteCarloControls, MonteCarloReport, MonteCarloSimulationData } from "@/types/montecarlo";
 
 type MonteCarloDashboardProps = {
   report?: MonteCarloReport | null;
@@ -15,23 +15,84 @@ type MonteCarloDashboardProps = {
   error?: string;
 };
 
-const inputClass = "w-full border border-zinc-300 bg-white px-3 py-2 text-sm text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black";
+const inputClass = "w-full border border-zinc-300 bg-white px-2 py-1.5 text-sm text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black";
 
 function MoneyMetric({ label, value, currency }: { label: string; value: number | null; currency: string }) {
   return <div className="border-l border-zinc-300 pl-4"><dt className="text-xs font-medium uppercase tracking-wider text-zinc-600">{label}</dt><dd className="mt-1 text-xl font-semibold tabular-nums text-black">{formatMoney(value)} {value === null ? "" : currency}</dd></div>;
 }
 
+const defaultControls = (): MonteCarloControls => ({
+  horizonYears: 20,
+  paths: 5_000,
+  engine: "bootstrap",
+  blockLength: 6,
+  seed: 1,
+  contributionFrequency: "monthly",
+  rebalancing: "none",
+  rebalancingEvery: 12,
+  rebalancingBand: 0.05,
+  taxRate: 0,
+});
+
+function NumberField({ label, value, onChange, min = 0, step = 1 }: { label: string; value: number; onChange: (value: number) => void; min?: number; step?: number }) {
+  return <label className="grid gap-1 text-sm font-medium text-zinc-800">{label}<input className={inputClass} type="number" min={min} step={step} value={value} onChange={(event) => onChange(Number(event.target.value))} /></label>;
+}
+
+function AssetInputs({ assets, onChange }: { assets: MonteCarloAssetInput[]; onChange: (assets: MonteCarloAssetInput[]) => void }) {
+  const total = assets.reduce((sum, asset) => sum + asset.weight, 0);
+  return <section aria-labelledby="portfolio-construction-heading">
+    <div className="border-b border-black pb-1"><h2 id="portfolio-construction-heading" className="font-semibold">Portfolio construction</h2></div>
+    <div className="mt-2 overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <thead className="border-y border-zinc-300 text-left text-xs uppercase tracking-wider text-zinc-600"><tr><th className="px-2 py-1.5">Asset</th><th className="px-2 py-1.5">Expected return</th><th className="px-2 py-1.5">Volatility</th><th className="px-2 py-1.5">Weight</th></tr></thead>
+        <tbody>{assets.map((asset, index) => <tr key={asset.ticker} className="border-b border-zinc-200">
+          <th className="px-2 py-1.5 text-left font-medium text-black"><span className="block">{asset.ticker}</span><span className="font-normal text-zinc-600">{asset.name}</span></th>
+          <td className="px-2 py-1.5"><input aria-label={`Expected return for ${asset.ticker}`} className={inputClass} type="number" step="0.1" value={(asset.expectedReturn * 100).toFixed(2)} onChange={(event) => onChange(assets.map((item, itemIndex) => itemIndex === index ? { ...item, expectedReturn: Number(event.target.value) / 100 } : item))} /></td>
+          <td className="px-2 py-1.5"><input aria-label={`Volatility for ${asset.ticker}`} className={inputClass} type="number" min="0" step="0.1" value={(asset.volatility * 100).toFixed(2)} onChange={(event) => onChange(assets.map((item, itemIndex) => itemIndex === index ? { ...item, volatility: Number(event.target.value) / 100 } : item))} /></td>
+          <td className="px-2 py-1.5"><input aria-label={`Weight for ${asset.ticker}`} className={inputClass} type="number" min="0" step="0.1" value={(asset.weight * 100).toFixed(2)} onChange={(event) => onChange(assets.map((item, itemIndex) => itemIndex === index ? { ...item, weight: Number(event.target.value) / 100 } : item))} /></td>
+        </tr>)}</tbody>
+      </table>
+    </div>
+    <p className={`mt-1 text-sm ${Math.abs(total - 1) < 0.0001 ? "text-zinc-600" : "font-medium text-red-700"}`}>Total: {(total * 100).toFixed(2)}% {Math.abs(total - 1) < 0.0001 ? "" : "(must be 100%)"}</p>
+  </section>;
+}
+
+function CashflowInputs({ cashflows, onChange }: { cashflows: MonteCarloCashflow[]; onChange: (cashflows: MonteCarloCashflow[]) => void }) {
+  return <section aria-labelledby="cashflow-heading">
+    <div className="border-b border-black pb-1"><h2 id="cashflow-heading" className="font-semibold">Annual cashflow</h2></div>
+    <div className="mt-2 h-[420px] w-[360px] max-w-full overflow-auto"><table className="w-full table-fixed border-collapse text-sm">
+      <colgroup><col className="w-14" /><col className="w-[110px]" /><col className="w-[110px]" /><col className="w-[90px]" /></colgroup>
+      <thead className="sticky top-0 border-y border-zinc-300 bg-white text-left text-xs uppercase tracking-wider text-zinc-600"><tr><th className="px-2 py-1.5">Year</th><th className="px-2 py-1.5">Income</th><th className="px-2 py-1.5">Spending</th><th className="px-2 py-1.5">Net</th></tr></thead>
+      <tbody>{cashflows.map((cashflow, index) => <tr key={cashflow.year} className="border-b border-zinc-200"><th className="px-2 py-1.5 text-left font-medium">{cashflow.year}</th><td className="px-2 py-1.5"><input aria-label={`Income for year ${cashflow.year}`} className={inputClass} type="number" min="0" step="100" value={cashflow.income} onChange={(event) => onChange(cashflows.map((item, itemIndex) => itemIndex === index ? { ...item, income: Number(event.target.value) } : item))} /></td><td className="px-2 py-1.5"><input aria-label={`Spending for year ${cashflow.year}`} className={inputClass} type="number" min="0" step="100" value={cashflow.spending} onChange={(event) => onChange(cashflows.map((item, itemIndex) => itemIndex === index ? { ...item, spending: Number(event.target.value) } : item))} /></td><td className="px-2 py-1.5 tabular-nums">{formatInteger(cashflow.income - cashflow.spending)}</td></tr>)}</tbody>
+    </table></div>
+  </section>;
+}
+
+function PortfolioSettings({ inputs, onChange }: { inputs: MonteCarloControls; onChange: (inputs: MonteCarloControls) => void }) {
+  const update = <K extends keyof MonteCarloControls>(key: K, value: MonteCarloControls[K]) => onChange({ ...inputs, [key]: value });
+  return <section aria-labelledby="portfolio-settings-heading">
+    <div className="border-b border-black pb-1"><h2 id="portfolio-settings-heading" className="font-semibold">Portfolio settings</h2></div>
+    <div className="mt-2 grid gap-2">
+      <label className="grid gap-1 text-sm font-medium text-zinc-800">Contribution frequency<select className={inputClass} value={inputs.contributionFrequency ?? "monthly"} onChange={(event) => update("contributionFrequency", event.target.value as MonteCarloControls["contributionFrequency"])}><option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="quarterly">Quarterly</option><option value="annually">Annually</option></select></label>
+      <label className="grid gap-1 text-sm font-medium text-zinc-800">Rebalancing<select className={inputClass} value={inputs.rebalancing ?? "none"} onChange={(event) => update("rebalancing", event.target.value as MonteCarloControls["rebalancing"])}><option value="none">None</option><option value="time">Every period</option><option value="bands">Tolerance bands</option></select></label>
+      {inputs.rebalancing === "time" && <NumberField label="Rebalance every (months)" min={1} value={inputs.rebalancingEvery ?? 12} onChange={(value) => update("rebalancingEvery", value)} />}
+      {inputs.rebalancing === "bands" && <NumberField label="Band width (%)" min={0} step={0.5} value={(inputs.rebalancingBand ?? 0.05) * 100} onChange={(value) => update("rebalancingBand", value / 100)} />}
+      <NumberField label="Capital-gains tax rate (%)" min={0} step={0.5} value={(inputs.taxRate ?? 0) * 100} onChange={(value) => update("taxRate", value / 100)} />
+    </div>
+  </section>;
+}
+
 function ModelInputs({ inputs, onChange }: { inputs: MonteCarloControls; onChange: (inputs: MonteCarloControls) => void }) {
   const update = <K extends keyof MonteCarloControls>(key: K, value: MonteCarloControls[K]) => onChange({ ...inputs, [key]: value });
   return (
-    <section className="border-y border-zinc-300 py-5" aria-labelledby="simulation-inputs-heading">
-      <div className="mb-4"><h2 id="simulation-inputs-heading" className="text-xl font-medium tracking-tight text-black">Simulation inputs</h2><p className="mt-1 text-sm text-zinc-600">Changes run a new scenario in this browser.</p></div>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <label className="grid gap-1 text-sm font-medium text-zinc-800">Horizon (years)<input className={inputClass} type="number" min="1" max="40" value={inputs.horizonYears} onChange={(event) => update("horizonYears", Number(event.target.value))} /></label>
-        <label className="grid gap-1 text-sm font-medium text-zinc-800">Paths<input className={inputClass} type="number" min="1" step="100" value={inputs.paths} onChange={(event) => update("paths", Number(event.target.value))} /></label>
-        <label className="grid gap-1 text-sm font-medium text-zinc-800">Engine<select className={inputClass} value={inputs.engine} onChange={(event) => update("engine", event.target.value as MonteCarloControls["engine"])}><option value="bootstrap">Block bootstrap</option><option value="student-t">Student-t</option></select></label>
-        {inputs.engine === "bootstrap" && <label className="grid gap-1 text-sm font-medium text-zinc-800">Block length (months)<input className={inputClass} type="number" min="1" value={inputs.blockLength} onChange={(event) => update("blockLength", Number(event.target.value))} /></label>}
-        <label className="grid gap-1 text-sm font-medium text-zinc-800">Seed<input className={inputClass} type="number" min="0" value={inputs.seed} onChange={(event) => update("seed", Number(event.target.value))} /></label>
+    <section aria-labelledby="simulation-inputs-heading">
+      <div className="mb-2"><h2 id="simulation-inputs-heading" className="font-semibold">Simulation inputs</h2></div>
+      <div className="grid gap-2 sm:grid-cols-2">
+        <label className="grid gap-1 text-sm font-medium text-zinc-800">Engine<select className={inputClass} value={inputs.engine} onChange={(event) => update("engine", event.target.value as MonteCarloControls["engine"])}><option value="bootstrap">Bootstrap</option><option value="student-t">Parametric</option></select></label>
+        {inputs.engine === "bootstrap" && <NumberField label="Block length (months)" min={1} value={inputs.blockLength} onChange={(value) => update("blockLength", value)} />}
+        <NumberField label="Random seed" value={inputs.seed} onChange={(value) => update("seed", value)} />
+        <NumberField label="Simulated paths" min={1} step={100} value={inputs.paths} onChange={(value) => update("paths", value)} />
+        <NumberField label="Horizon (years)" min={1} value={inputs.horizonYears} onChange={(value) => update("horizonYears", value)} />
       </div>
     </section>
   );
@@ -55,27 +116,67 @@ function buildReport(data: MonteCarloSimulationData, inputs: MonteCarloControls,
 }
 
 export function MonteCarloDashboard({ report: initialReport = null, simulation = null, error: initialError }: MonteCarloDashboardProps) {
-  const [inputs, setInputs] = useState<MonteCarloControls | null>(initialReport?.inputs ?? (simulation ? { horizonYears: 20, paths: 5_000, engine: "bootstrap", blockLength: 6, seed: 1 } : null));
+  const [inputs, setInputs] = useState<MonteCarloControls | null>(initialReport?.inputs ?? (simulation ? defaultControls() : null));
+  const [assets, setAssets] = useState<MonteCarloAssetInput[]>(() => simulation?.instruments.map((instrument, index) => ({ ...instrument, weight: (simulation.portfolio.values[index] ?? 0) / Math.max(1, simulation.portfolio.values.reduce((sum, value) => sum + value, 0)) })) ?? []);
+  const [cashflows, setCashflows] = useState<MonteCarloCashflow[]>(() => Array.from({ length: inputs?.horizonYears ?? 20 }, (_, index) => ({ year: index + 1, income: 0, spending: 0 })));
   const [report, setReport] = useState(initialReport);
   const [error, setError] = useState(initialError);
+  const [running, setRunning] = useState(false);
   const runId = useRef(0);
-  const updateInputs = (next: MonteCarloControls) => { setInputs(next); setError(undefined); };
-
-  useEffect(() => {
+  const updateInputs = (next: MonteCarloControls) => {
+    if (inputs && next.horizonYears !== inputs.horizonYears) {
+      setCashflows((current) => Array.from({ length: next.horizonYears }, (_, index) => current[index] ?? { year: index + 1, income: 0, spending: 0 }));
+    }
+    setInputs(next);
+    setError(undefined);
+  };
+  const resultsRef = useRef<HTMLElement>(null);
+  const runSimulation = () => {
     if (!simulation || !inputs) return;
+    if (Math.abs(assets.reduce((sum, asset) => sum + asset.weight, 0) - 1) > 0.0001) {
+      setError("Asset weights must total 100%.");
+      return;
+    }
+    setRunning(true);
     const worker = new Worker(new URL("./simulation-worker.ts", import.meta.url));
     const id = ++runId.current;
-    const overrides: Overrides = { expectedReturn: new Array(simulation.dataset.tickers.length).fill(null), volatility: new Array(simulation.dataset.tickers.length).fill(null), inflation: null, riskFree: null };
+    const overrides: Overrides = {
+      expectedReturn: simulation.dataset.tickers.map((ticker) => assets.find((asset) => asset.ticker === ticker)?.expectedReturn ?? null),
+      volatility: simulation.dataset.tickers.map((ticker) => assets.find((asset) => asset.ticker === ticker)?.volatility ?? null),
+      inflation: null,
+      riskFree: null,
+    };
+    const portfolio = {
+      ...simulation.portfolio,
+      values: simulation.dataset.tickers.map((ticker) => assets.find((asset) => asset.ticker === ticker)?.value ?? 0),
+      weights: simulation.dataset.tickers.map((ticker) => assets.find((asset) => asset.ticker === ticker)?.weight ?? 0),
+      cashflows: cashflows.map(({ income, spending }) => ({ income, spending })),
+      contributionFrequency: inputs.contributionFrequency,
+      rebalancing: inputs.rebalancing,
+      rebalancingEvery: inputs.rebalancingEvery,
+      rebalancingBand: inputs.rebalancingBand,
+      taxRate: inputs.taxRate,
+    };
     worker.onmessage = ({ data }: MessageEvent<WorkerResponse>) => {
       if (data.runId !== id) return;
+      setRunning(false);
       if (data.type === "error") setError(data.error);
-      else setReport(buildReport(simulation, inputs, data.summary));
+      else {
+        setReport(buildReport(simulation, inputs, data.summary));
+        requestAnimationFrame(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+      }
+      worker.terminate();
     };
-    worker.postMessage({ type: "run", runId: id, dataset: simulation.dataset, settings: { paths: inputs.paths, months: inputs.horizonYears * 12, seed: inputs.seed, engine: inputs.engine === "bootstrap" ? { engine: "bootstrap", blockLength: inputs.blockLength } : { engine: "studentT", nu: null } }, portfolio: simulation.portfolio, overrides });
-    return () => worker.terminate();
-  }, [inputs, simulation]);
+    worker.postMessage({ type: "run", runId: id, dataset: simulation.dataset, settings: { paths: inputs.paths, months: inputs.horizonYears * 12, seed: inputs.seed, engine: inputs.engine === "bootstrap" ? { engine: "bootstrap", blockLength: inputs.blockLength } : { engine: "studentT", nu: null } }, portfolio, overrides });
+  };
 
-  if (!report || !inputs) {
+  const workspace = simulation && inputs ? <div className="grid gap-6 border-y border-zinc-300 py-3 lg:grid-cols-[minmax(0,1.15fr)_360px_minmax(0,1fr)]">
+    <AssetInputs assets={assets} onChange={setAssets} />
+    <CashflowInputs cashflows={cashflows} onChange={setCashflows} />
+    <div className="flex flex-col gap-4"><ModelInputs inputs={inputs} onChange={updateInputs} /><PortfolioSettings inputs={inputs} onChange={updateInputs} /><button className="mt-auto self-end bg-black px-4 py-1.5 text-sm font-medium text-white disabled:opacity-50" disabled={running} onClick={runSimulation} type="button">{running ? "Running…" : "Run"}</button></div>
+  </div> : null;
+
+  if (!inputs || (!report && !simulation)) {
     return (
       <section className="border border-zinc-300 bg-zinc-50 px-5 py-4" aria-labelledby="monte-carlo-unavailable-heading">
         <h2 id="monte-carlo-unavailable-heading" className="font-medium text-black">{simulation && !error ? "Running simulation" : "Simulation unavailable"}</h2>
@@ -83,6 +184,7 @@ export function MonteCarloDashboard({ report: initialReport = null, simulation =
       </section>
     );
   }
+  if (!report) return <div className="space-y-4"><section className="border-b-2 border-black pb-3" aria-labelledby="monte-carlo-heading"><h1 id="monte-carlo-heading" className="text-3xl font-semibold tracking-tight text-black">Monte Carlo</h1></section>{workspace}</div>;
 
   const terminalYear = report.fan.at(-1)?.year ?? inputs.horizonYears;
   const fanData = report.fan.map((point) => ({ ...point, outerBand: point.p90 - point.p10 }));
@@ -90,9 +192,8 @@ export function MonteCarloDashboard({ report: initialReport = null, simulation =
 
   return (
     <div className="space-y-8">
-      <section className="border-b-2 border-black pb-5" aria-labelledby="monte-carlo-heading">
-        <p className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-600">Forward-looking portfolio range</p>
-        <div className="mt-2 flex flex-wrap items-end justify-between gap-4"><div><h1 id="monte-carlo-heading" className="text-3xl font-semibold tracking-tight text-black">Monte Carlo</h1><p className="mt-1 max-w-2xl text-sm leading-6 text-zinc-600">Historical market relationships generate possible paths, not a forecast or investment recommendation.</p></div><p className="text-xs tabular-nums text-zinc-500">Run {report.generatedAt}</p></div>
+      <section className="border-b-2 border-black pb-3" aria-labelledby="monte-carlo-heading">
+        <div className="flex flex-wrap items-end justify-between gap-2"><h1 id="monte-carlo-heading" className="text-3xl font-semibold tracking-tight text-black">Monte Carlo</h1><p className="text-xs tabular-nums text-zinc-500">Run {report.generatedAt}</p></div>
       </section>
 
       <dl className="grid gap-5 border-b border-zinc-300 pb-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -103,9 +204,10 @@ export function MonteCarloDashboard({ report: initialReport = null, simulation =
         <div className="border-l border-zinc-300 pl-4"><dt className="text-xs font-medium uppercase tracking-wider text-zinc-600">{report.successLabel}</dt><dd className="mt-1 text-xl font-semibold tabular-nums text-black">{formatPercent(report.successProbability, { digits: 1 })}</dd></div>
       </dl>
 
-      <ModelInputs inputs={inputs} onChange={updateInputs} />
+      {workspace}
+      {!simulation && <ModelInputs inputs={inputs} onChange={updateInputs} />}
 
-      <section aria-labelledby="fan-chart-heading"><div className="mb-3 flex flex-wrap items-baseline justify-between gap-2"><div><h2 id="fan-chart-heading" className="text-xl font-medium tracking-tight text-black">Projected wealth range</h2><p className="mt-1 text-sm text-zinc-600">The central line is the median; bands show the 10th–90th percentile range.</p></div><span className="font-mono text-xs text-zinc-600">{report.currency}</span></div>
+      <section ref={resultsRef} aria-labelledby="fan-chart-heading"><div className="mb-3 flex flex-wrap items-baseline justify-between gap-2"><div><h2 id="fan-chart-heading" className="text-xl font-medium tracking-tight text-black">Projected wealth range</h2><p className="mt-1 text-sm text-zinc-600">The central line is the median; bands show the 10th–90th percentile range.</p></div><span className="font-mono text-xs text-zinc-600">{report.currency}</span></div>
         {report.fan.length > 0 ? <div className="h-85 w-full" aria-label="Projected wealth percentile chart"><ResponsiveContainer><ComposedChart data={fanData} margin={chartMargin}><CartesianGrid {...gridProps} /><XAxis dataKey="year" {...xAxisProps} label={{ value: "Years", position: "insideBottomRight", offset: -2, fill: "#525252", fontSize: 11 }} /><YAxis {...yAxisProps} tickFormatter={formatAxisValue} /><Tooltip contentStyle={boxedTooltipStyle} cursor={lineCursor} formatter={(value, name) => [`${formatInteger(Number(value))} ${report.currency}`, name === "paidIn" ? "Paid in" : String(name)]} /><Area type="monotone" dataKey="p10" name="10th percentile" stackId="range" stroke="none" fill="#ffffff" isAnimationActive={false} /><Area type="monotone" dataKey="outerBand" name="10th–90th percentile" stackId="range" stroke="none" fill="#d4d4d8" isAnimationActive={false} /><Line type="monotone" dataKey="median" name="Median" stroke="#171717" strokeWidth={2.5} dot={false} isAnimationActive={false} /><Line type="monotone" dataKey="paidIn" name="Paid in" stroke="#a16207" strokeDasharray="5 3" dot={false} isAnimationActive={false} /></ComposedChart></ResponsiveContainer></div> : <p className="border border-zinc-300 px-4 py-3 text-sm text-zinc-700">No percentile path is available for this run.</p>}</section>
 
       <div className="grid gap-8 lg:grid-cols-2">
