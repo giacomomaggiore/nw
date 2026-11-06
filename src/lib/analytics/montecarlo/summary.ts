@@ -6,7 +6,7 @@ export const BAND_LEVELS = [0.1, 0.25, 0.5, 0.75, 0.9] as const;
 /** Horizons, in years, of the horizon table and the histograms; the full horizon is always added. */
 export const STANDARD_HORIZON_YEARS = [1, 3, 5, 10, 20, 30, 40] as const;
 
-const DEFAULT_SAMPLE_PATHS = 10;
+const DEFAULT_SAMPLE_PATHS = 25;
 const DEFAULT_HISTOGRAM_BINS = 40;
 
 export type Histogram = {

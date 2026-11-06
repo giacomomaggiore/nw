@@ -5,9 +5,13 @@ import type { MonthlyDataset } from "@/lib/analytics/montecarlo/types";
 /** Data prepared by the server loader and consumed by the browser simulation worker. */
 export type MonteCarloSimulationData = {
   currency: string;
+  currencyOptions: string[];
   dataset: MonthlyDataset;
   portfolio: Portfolio;
   instruments: Array<{ ticker: string; name: string; value: number; expectedReturn: number; volatility: number; proxy: boolean }>;
+  datasets: Record<string, MonthlyDataset>;
+  portfolios: Record<string, Portfolio>;
+  instrumentsByCurrency: Record<string, Array<{ ticker: string; name: string; value: number; expectedReturn: number; volatility: number; proxy: boolean }>>;
   historyStart: string;
   historyEnd: string;
 };

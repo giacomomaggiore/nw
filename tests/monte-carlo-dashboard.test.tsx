@@ -27,8 +27,8 @@ const report: MonteCarloReport = {
 describe("MonteCarloDashboard", () => {
   it("renders report metrics, editable inputs, charts and warnings", () => {
     const html = renderToStaticMarkup(<MonteCarloDashboard report={report} />);
-    for (const text of ["Monte Carlo", "420,000 EUR", "Chance of ending above paid-in capital", "76%", "Simulation inputs", "Projected wealth range", "Terminal-value distribution", "Horizon check", "Sequence of returns", "Short proxy history limits confidence."]) assert.match(html, new RegExp(text));
-    assert.equal((html.match(/class="recharts-responsive-container"/g) ?? []).length, 3);
+    for (const text of ["Monte Carlo", "420,000 EUR", "Chance of ending above paid-in capital", "76%", "Simulation inputs", "Projected wealth range", "Terminal-value distribution", "Horizon check", "Short proxy history limits confidence."]) assert.match(html, new RegExp(text));
+    assert.equal((html.match(/class="recharts-responsive-container"/g) ?? []).length, 2);
     assert.match(html, /value="10000"/);
     assert.doesNotMatch(html, /NaN|Infinity|undefined/);
   });
