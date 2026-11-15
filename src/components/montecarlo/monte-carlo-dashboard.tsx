@@ -7,7 +7,7 @@ import type { Overrides } from "@/lib/analytics/montecarlo/accounting";
 import type { Summary } from "@/lib/analytics/montecarlo/summary";
 import type { WorkerResponse } from "@/lib/analytics/montecarlo/worker-protocol";
 import { formatAxisValue, formatInteger, formatMoney, formatPercent } from "@/lib/format";
-import type { MonteCarloAssetInput, MonteCarloCashflow, MonteCarloControls, MonteCarloReport, MonteCarloSimulationData } from "@/types/montecarlo";
+import type { MonteCarloAssetInput, MonteCarloCashflow, MonteCarloCashflowEvent, MonteCarloControls, MonteCarloPhase, MonteCarloReport, MonteCarloSimulationData } from "@/types/montecarlo";
 
 type MonteCarloDashboardProps = {
   report?: MonteCarloReport | null;
@@ -46,7 +46,7 @@ function AssetInputs({ assets, onChange }: { assets: MonteCarloAssetInput[]; onC
       <table className="w-full border-collapse text-sm">
         <thead className="border-y border-zinc-300 text-left text-xs uppercase tracking-wider text-zinc-600"><tr><th className="px-2 py-1.5">Asset</th><th className="px-2 py-1.5">Expected return</th><th className="px-2 py-1.5">Volatility</th><th className="px-2 py-1.5">Weight</th></tr></thead>
         <tbody>{assets.map((asset, index) => <tr key={asset.ticker} className="border-b border-zinc-200">
-          <th className="px-2 py-1.5 text-left font-medium text-black"><span className="block">{asset.ticker}</span><span className="font-normal text-zinc-600">{asset.name}</span></th>
+          <th className="px-2 py-1.5 text-left font-medium text-black"><a href={`https://finance.yahoo.com/quote/${encodeURIComponent(asset.ticker)}`} target="_blank" rel="noreferrer" className="underline decoration-zinc-400 underline-offset-2"><span className="block">{asset.ticker}</span><span className="font-normal text-zinc-600">{asset.name}</span></a></th>
           <td className="px-2 py-1.5"><input aria-label={`Expected return for ${asset.ticker}`} className={inputClass} type="number" step="0.1" value={(asset.expectedReturn * 100).toFixed(2)} onChange={(event) => onChange(assets.map((item, itemIndex) => itemIndex === index ? { ...item, expectedReturn: Number(event.target.value) / 100 } : item))} /></td>
           <td className="px-2 py-1.5"><input aria-label={`Volatility for ${asset.ticker}`} className={inputClass} type="number" min="0" step="0.1" value={(asset.volatility * 100).toFixed(2)} onChange={(event) => onChange(assets.map((item, itemIndex) => itemIndex === index ? { ...item, volatility: Number(event.target.value) / 100 } : item))} /></td>
           <td className="px-2 py-1.5"><input aria-label={`Weight for ${asset.ticker}`} className={inputClass} type="number" min="0" step="0.1" value={(asset.weight * 100).toFixed(2)} onChange={(event) => onChange(assets.map((item, itemIndex) => itemIndex === index ? { ...item, weight: Number(event.target.value) / 100 } : item))} /></td>
@@ -57,14 +57,67 @@ function AssetInputs({ assets, onChange }: { assets: MonteCarloAssetInput[]; onC
   </section>;
 }
 
-function CashflowInputs({ cashflows, onChange }: { cashflows: MonteCarloCashflow[]; onChange: (cashflows: MonteCarloCashflow[]) => void }) {
+const defaultPhases = (horizonYears = 20): MonteCarloPhase[] => [
+  { id: "phase-1", startYear: 1, endYear: horizonYears, income: 0, spending: 0 },
+];
+
+const defaultEvents = (): MonteCarloCashflowEvent[] => [
+  { id: "event-1", year: 1, type: "expense", amount: 0 },
+];
+
+function generateCashflows(horizonYears: number, phases: MonteCarloPhase[], events: MonteCarloCashflowEvent[]) {
+  return Array.from({ length: horizonYears }, (_, index) => {
+    const year = index + 1;
+    const phase = phases.find((item) => year >= item.startYear && year <= item.endYear);
+    const yearEvents = events.filter((event) => event.year === year);
+    return {
+      year,
+      income: (phase?.income ?? 0) + yearEvents.filter((event) => event.type === "income").reduce((sum, event) => sum + event.amount, 0),
+      spending: (phase?.spending ?? 0) + yearEvents.filter((event) => event.type === "expense").reduce((sum, event) => sum + event.amount, 0),
+    };
+  });
+}
+
+function CashflowInputs({ cashflows, onChange, onReset, phases, events, onPhasesChange, onEventsChange, onViewCashflows, showCashflows }: {
+  cashflows: MonteCarloCashflow[];
+  onChange: (cashflows: MonteCarloCashflow[]) => void;
+  onReset: () => void;
+  phases: MonteCarloPhase[];
+  events: MonteCarloCashflowEvent[];
+  onPhasesChange: (phases: MonteCarloPhase[]) => void;
+  onEventsChange: (events: MonteCarloCashflowEvent[]) => void;
+  onViewCashflows: () => void;
+  showCashflows: boolean;
+}) {
+  const updatePhase = (index: number, change: Partial<MonteCarloPhase>) => onPhasesChange(phases.map((phase, phaseIndex) => phaseIndex === index ? { ...phase, ...change } : phase));
+  const updateEvent = (id: string, change: Partial<MonteCarloCashflowEvent>) => onEventsChange(events.map((event) => event.id === id ? { ...event, ...change } : event));
   return <section aria-labelledby="cashflow-heading">
-    <div className="border-b border-zinc-300 pb-1"><h2 id="cashflow-heading" className="font-semibold">Annual cashflow</h2></div>
-    <div className="mt-2 h-[420px] w-[360px] max-w-full overflow-auto"><table className="w-full table-fixed border-collapse text-sm">
+    <div className="flex items-center justify-between border-b border-zinc-300 pb-1"><h2 id="cashflow-heading" className="font-semibold">Annual cashflow</h2><button className="text-xs font-medium text-zinc-600 underline decoration-zinc-400 underline-offset-2 hover:text-black focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" onClick={onReset} type="button">Reset</button></div>
+    <div className="mt-2 space-y-3">
+      {showCashflows ? <div className="flex items-center justify-between gap-2"><h3 className="text-sm font-medium text-black">Projected cashflows</h3><button className="border border-zinc-300 bg-white px-2 py-1 text-xs font-medium text-zinc-700 hover:border-black hover:text-black" onClick={onViewCashflows} type="button">Edit inputs</button></div> : <div className="flex items-center justify-between gap-2"><h3 className="text-sm font-medium text-black">Phases</h3><div className="flex gap-2"><button className="border border-zinc-300 bg-white px-2 py-1 text-xs font-medium text-zinc-700 hover:border-black hover:text-black" onClick={() => onPhasesChange([...phases, { id: `phase-${Date.now()}`, startYear: 1, endYear: 20, income: 0, spending: 0 }])} type="button">+ Add phase</button><button className="border border-zinc-300 bg-white px-2 py-1 text-xs font-medium text-zinc-700 hover:border-black hover:text-black" onClick={() => onEventsChange([...events, { id: `event-${Date.now()}`, year: 1, type: "expense", amount: 0 }])} type="button">+ Add event</button><button className="border border-black bg-black px-2 py-1 text-xs font-medium text-white hover:bg-zinc-800" onClick={onViewCashflows} type="button">View cashflows</button></div></div>}
+      {showCashflows ? null : <>
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.3fr)_minmax(0,1.3fr)_auto] gap-2 text-xs font-medium uppercase tracking-wide text-zinc-500"><span>From</span><span>To</span><span>Income</span><span>Spending</span><span /></div>
+      <div className="space-y-2">{phases.map((phase, index) => <div key={phase.id} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.3fr)_minmax(0,1.3fr)_auto] items-end gap-2">
+        <input aria-label={`Phase ${index + 1} start year`} className={inputClass} type="number" min="1" value={phase.startYear} onChange={(event) => updatePhase(index, { startYear: Number(event.target.value) })} />
+        <input aria-label={`Phase ${index + 1} end year`} className={inputClass} type="number" min="1" value={phase.endYear} onChange={(event) => updatePhase(index, { endYear: Number(event.target.value) })} />
+        <input aria-label={`Phase ${index + 1} income`} className={inputClass} type="number" min="0" step="100" value={phase.income} onChange={(event) => updatePhase(index, { income: Number(event.target.value) })} />
+        <input aria-label={`Phase ${index + 1} spending`} className={inputClass} type="number" min="0" step="100" value={phase.spending} onChange={(event) => updatePhase(index, { spending: Number(event.target.value) })} />
+        <button aria-label={`Delete phase ${index + 1}`} className="px-1 text-xs font-medium text-zinc-600 underline underline-offset-2 hover:text-black" onClick={() => onPhasesChange(phases.filter((item) => item.id !== phase.id))} type="button">Delete</button>
+      </div>)}</div>
+      <div className="flex items-center justify-between gap-2"><h3 className="text-sm font-medium text-black">One-time events</h3></div>
+      {events.length > 0 && <div className="space-y-2"><div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,1.5fr)_auto] gap-2 text-xs font-medium uppercase tracking-wide text-zinc-500"><span>Year</span><span>Type</span><span>Amount</span><span /></div>{events.map((event) => <div key={event.id} className="grid grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,1.5fr)_auto] items-end gap-2">
+        <input aria-label={`Event year ${event.id}`} className={inputClass} type="number" min="1" value={event.year} onChange={(input) => updateEvent(event.id, { year: Number(input.target.value) })} />
+        <select aria-label={`Event type ${event.id}`} className={inputClass} value={event.type} onChange={(input) => updateEvent(event.id, { type: input.target.value as MonteCarloCashflowEvent["type"] })}><option value="expense">Expense</option><option value="income">Income</option></select>
+        <input aria-label={`Event amount ${event.id}`} className={inputClass} type="number" min="0" step="100" value={event.amount} onChange={(input) => updateEvent(event.id, { amount: Number(input.target.value) })} />
+        <button aria-label={`Delete event ${event.id}`} className="px-1 text-xs font-medium text-zinc-600 underline underline-offset-2 hover:text-black" onClick={() => onEventsChange(events.filter((item) => item.id !== event.id))} type="button">Delete</button>
+      </div>)}</div>}
+      </>}
+    </div>
+    {showCashflows && <div className="mt-2 h-[420px] w-full max-w-full overflow-auto"><table className="w-full table-fixed border-collapse text-sm">
       <colgroup><col className="w-14" /><col className="w-[110px]" /><col className="w-[110px]" /><col className="w-[90px]" /></colgroup>
       <thead className="sticky top-0 border-y border-zinc-300 bg-white text-left text-xs uppercase tracking-wider text-zinc-600"><tr><th className="px-2 py-1.5">Year</th><th className="px-2 py-1.5">Income</th><th className="px-2 py-1.5">Spending</th><th className="px-2 py-1.5">Net</th></tr></thead>
       <tbody>{cashflows.map((cashflow, index) => <tr key={cashflow.year} className="border-b border-zinc-200"><th className="px-2 py-1.5 text-left font-medium">{cashflow.year}</th><td className="px-2 py-1.5"><input aria-label={`Income for year ${cashflow.year}`} className={inputClass} type="number" min="0" step="100" value={cashflow.income} onChange={(event) => onChange(cashflows.map((item, itemIndex) => itemIndex === index ? { ...item, income: Number(event.target.value) } : item))} /></td><td className="px-2 py-1.5"><input aria-label={`Spending for year ${cashflow.year}`} className={inputClass} type="number" min="0" step="100" value={cashflow.spending} onChange={(event) => onChange(cashflows.map((item, itemIndex) => itemIndex === index ? { ...item, spending: Number(event.target.value) } : item))} /></td><td className="px-2 py-1.5 tabular-nums">{formatInteger(cashflow.income - cashflow.spending)}</td></tr>)}</tbody>
-    </table></div>
+    </table></div>}
   </section>;
 }
 
@@ -119,7 +172,10 @@ function buildReport(data: MonteCarloSimulationData, inputs: MonteCarloControls,
 export function MonteCarloDashboard({ report: initialReport = null, simulation = null, error: initialError }: MonteCarloDashboardProps) {
   const [inputs, setInputs] = useState<MonteCarloControls | null>(initialReport?.inputs ?? (simulation ? defaultControls() : null));
   const [assets, setAssets] = useState<MonteCarloAssetInput[]>(() => simulation?.instruments.map((instrument, index) => ({ ...instrument, weight: (simulation.portfolio.values[index] ?? 0) / Math.max(1, simulation.portfolio.values.reduce((sum, value) => sum + value, 0)) })) ?? []);
-  const [cashflows, setCashflows] = useState<MonteCarloCashflow[]>(() => Array.from({ length: inputs?.horizonYears ?? 20 }, (_, index) => ({ year: index + 1, income: 0, spending: 0 })));
+  const [phases, setPhases] = useState<MonteCarloPhase[]>(() => defaultPhases(inputs?.horizonYears ?? 20));
+  const [events, setEvents] = useState<MonteCarloCashflowEvent[]>(defaultEvents);
+  const [cashflows, setCashflows] = useState<MonteCarloCashflow[]>(() => generateCashflows(inputs?.horizonYears ?? 20, defaultPhases(inputs?.horizonYears ?? 20), defaultEvents()));
+  const [showCashflows, setShowCashflows] = useState(false);
   const [report, setReport] = useState(initialReport);
   const [error, setError] = useState(initialError);
   const [running, setRunning] = useState(false);
@@ -190,9 +246,21 @@ export function MonteCarloDashboard({ report: initialReport = null, simulation =
     worker.postMessage({ type: "run", runId: id, dataset: activeSimulation.dataset, settings: { paths: inputs.paths, months: inputs.horizonYears * 12, seed: inputs.seed, engine: inputs.engine === "bootstrap" ? { engine: "bootstrap", blockLength: inputs.blockLength } : { engine: "studentT", nu: null } }, portfolio, overrides });
   };
 
-  const workspace = simulation && inputs ? <div className="grid gap-6 py-3 lg:grid-cols-[minmax(0,1.15fr)_360px_minmax(0,1fr)]">
+  const workspace = simulation && inputs ? <div className="grid gap-6 py-3 lg:grid-cols-[minmax(0,1.1fr)_minmax(420px,0.9fr)_minmax(0,1fr)]">
     <AssetInputs assets={assets} onChange={setAssets} />
-    <CashflowInputs cashflows={cashflows} onChange={setCashflows} />
+    <CashflowInputs cashflows={cashflows} onChange={setCashflows} phases={phases} events={events} onPhasesChange={setPhases} onEventsChange={setEvents} showCashflows={showCashflows} onViewCashflows={() => {
+      if (!showCashflows) setCashflows(generateCashflows(inputs?.horizonYears ?? 20, phases, events));
+      setShowCashflows((current) => !current);
+    }} onReset={() => {
+      const resetPhases = defaultPhases(inputs?.horizonYears ?? 20);
+      const resetEvents = defaultEvents();
+      setPhases(resetPhases);
+      setEvents(resetEvents);
+      setCashflows(generateCashflows(inputs?.horizonYears ?? 20, resetPhases, resetEvents));
+      setShowCashflows(false);
+      setReport(null);
+      setError(undefined);
+    }} />
     <div className="flex flex-col gap-4"><ModelInputs inputs={inputs} onChange={updateInputs} currencies={simulation.currencyOptions} selectedCurrency={selectedCurrency} onCurrencyChange={selectCurrency} /><PortfolioSettings inputs={inputs} onChange={updateInputs} /><button className="mt-auto self-end bg-black px-4 py-1.5 text-sm font-medium text-white disabled:opacity-50" disabled={running} onClick={runSimulation} type="button">{running ? "Running…" : "Run"}</button></div>
   </div> : null;
 

@@ -32,6 +32,21 @@ export type MonteCarloCashflow = {
   spending: number;
 };
 
+export type MonteCarloPhase = {
+  id: string;
+  startYear: number;
+  endYear: number;
+  income: number;
+  spending: number;
+};
+
+export type MonteCarloCashflowEvent = {
+  id: string;
+  year: number;
+  type: "income" | "expense";
+  amount: number;
+};
+
 export type MonteCarloControls = {
   horizonYears: number;
   paths: number;
