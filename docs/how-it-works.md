@@ -161,6 +161,7 @@ where $w$ is the fraction of the interval for which a flow was invested (a flow 
 - Totals sum the months that have data. The total savings rate is total savings over total income.
 - Monthly averages cover the months up to the previous month (the current month is still in progress); months in that window without data count as zero. The savings-rate average is the mean of the monthly rates that exist.
 - Rows: income by category, expenses by parent category, two "no rent" variants, expenses, savings and savings rate.
+- The variants exclude the exact expense categories `RENT` and, for the second row, `HEALTH_INSURANCE` (case-insensitive), not their parent categories. Unclassified expenses remain included.
 
 ### Expense insights and filters
 

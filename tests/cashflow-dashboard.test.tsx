@@ -57,6 +57,24 @@ describe("CashflowDashboard", () => {
     assert.match(html, /food\.delivery/);
   });
 
+  it("excludes rent and health insurance from the monthly values, total and average", () => {
+    const source = buildCashflowReport([
+      { date: "2026-01-01", type: "expense", amount: 1000, category: "RENT" },
+      { date: "2026-01-02", type: "expense", amount: 300, category: "HEALTH_INSURANCE" },
+      { date: "2026-01-03", type: "expense", amount: 200, category: "DOCTOR" },
+      { date: "2026-01-04", type: "expense", amount: 40, category: null },
+      { date: "2026-02-01", type: "expense", amount: 100, category: "HEALTH_INSURANCE" },
+      { date: "2026-02-02", type: "expense", amount: 60, category: "DOCTOR" },
+    ], [
+      { category: "RENT", parentCategory: "HOUSING", isEssential: true, isRecurring: true },
+      { category: "HEALTH_INSURANCE", parentCategory: "HEALTH", isEssential: true, isRecurring: true },
+      { category: "DOCTOR", parentCategory: "HEALTH", isEssential: true, isRecurring: false },
+    ]);
+    const row = renderReport(source, "2026-03-15").match(/<tr[^>]*><th[^>]*>Expense \(no rent and health insurance\)<\/th>[\s\S]*?<\/tr>/)![0];
+    const values = [...row.matchAll(/<td[^>]*>([^<]*)<\/td>/g)].map((match) => match[1]);
+    assert.deepEqual(values, ["240", "60", ...Array(10).fill("—"), "300", "150"]);
+  });
+
   it("renders the two tables and eight charts", () => {
     assert.equal((html.match(/<table\b/g) ?? []).length, 2);
     assert.equal((html.match(/class="recharts-responsive-container"/g) ?? []).length, 8);

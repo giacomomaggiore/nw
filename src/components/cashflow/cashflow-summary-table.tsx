@@ -146,7 +146,7 @@ export function CashflowSummary({
             <SectionRow title="Expenses" columns={columns} />
             {report.parentCategories.map((category) => moneyRow(category, "category", (period) => period.categories[category]))}
             {moneyRow("Expense (no rent)", "bold", (period) => expensesExcluding(period, ["rent"]))}
-            {moneyRow("Expense (no rent and health insurance)", "bold", (period) => expensesExcluding(period, ["rent", "health insurance"]))}
+            {moneyRow("Expense (no rent and health insurance)", "bold", (period) => expensesExcluding(period, ["rent", "health_insurance"]))}
             {moneyRow("Expenses", "total", (period) => period.expenses)}
           </tbody>
           <tbody>
